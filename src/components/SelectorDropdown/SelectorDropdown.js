@@ -1,0 +1,71 @@
+import React, {Component} from "react";
+import {Grid, Form, Button, Dropdown} from "semantic-ui-react";
+import {reduxForm, Field, formValueSelector, SubmissionError} from "redux-form";
+import {connect} from "react-redux";
+import {isEmpty, keys} from "lodash";
+import {doTransactionFilter} from "../../routes/OAuth/modules/oauth";
+
+const onClick = (values, dispatch) => {
+  return new Promise((resolve) => {
+    const errors = {};
+    if (isEmpty(values.source)) {
+      errors.source = 'Choose a transaction type to filter by.'
+    }
+    if (keys(errors).length) {
+      throw new SubmissionError(errors);
+    } else {
+      dispatch(doTransactionFilter(values.source));
+      resolve();
+    }
+  });
+};
+
+const options = [
+  {text: 'Card Payments', value: 'MASTER_CARD'},
+  {text: 'Direct Debits', value: 'DIRECT_DEBIT'},
+  {text: 'Inbound Payments', value: 'FASTER_PAYMENTS_IN'},
+  {text: 'Outbound Payments', value: 'FASTER_PAYMENTS_OUT'}
+  ];
+
+class SelectorDropdown extends React.Component {
+
+  render () {
+    const {handleSubmit, submitting} = this.props;
+    return (
+      <Grid >
+        <Form style={{margin: "0 80px 0 auto"}} inverted loading={submitting} onSubmit={handleSubmit(onClick)}>
+          <Form.Group widths='equal'>
+          <Field label="Filter Transactions" type="select" name="source" component={selectComponent}/>
+          <Button primary disabled={submitting} type="submit">Select</Button>
+          </Form.Group>
+        </Form>
+      </Grid>
+    )
+  }
+}
+
+const selectComponent = (props) => {
+  return (
+    <Form.Field>
+      <Dropdown options={options} selection={true} {...props.input}
+                value={props.input.value}
+                onChange={(param,data) => props.input.onChange(data.value)}
+                placeholder={props.label}
+      />
+    </Form.Field>
+  )
+};
+
+SelectorDropdown = reduxForm({
+  form: 'sourceForm',
+})(SelectorDropdown);
+
+const selector = formValueSelector('sourceForm');
+
+SelectorDropdown = connect(
+  state => ({
+    firstValue: selector(state, 'source'),
+  })
+)(SelectorDropdown);
+
+export default SelectorDropdown

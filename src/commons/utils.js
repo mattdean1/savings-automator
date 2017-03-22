@@ -1,0 +1,74 @@
+const pick = require('lodash');
+
+const SAFE_INPUT_PROPS = ['name', 'value', 'onBlur', 'onChange', 'onDragStart', 'onDrop',
+  'onFocus'];
+export const safeInputPropsOf = (fieldConfig) => pick(fieldConfig, SAFE_INPUT_PROPS);
+
+
+
+export const sourceUrlEncode = (source) => {
+  if (source === 'MASTER_CARD' || source === 'mastercard') {
+    return '/mastercard';
+  } else if (source === 'FASTER_PAYMENTS_IN' || source === 'fps/in') {
+    return '/fps/in';
+  } else if (source === 'FASTER_PAYMENTS_OUT' || source === 'fps/out') {
+    return '/fps/out';
+  } else if (source === 'DIRECT_DEBIT' || source === 'direct-debit') {
+    return '/direct-debit';
+  } else {
+    return ''
+  }
+};
+
+export const dateRangeEncode = (fromDate, toDate) => {
+  const from = fromDate !== 'none' ? fromDate : null;
+  const to = toDate !== 'none' ? toDate : null;
+  return to && from ? '?from=' + fromDate + '&' + 'to=' + toDate : ''
+};
+
+
+export const currencySymbols = {
+  GBP: '£',
+  USD: '$',
+  EUR: "€"
+};
+
+export const iconClasses = {
+  MASTER_CARD: 'credit card alternative',
+  FASTER_PAYMENTS_OUT: 'send',
+  FASTER_PAYMENTS_IN: 'gift',
+  STRIPE_FUNDING: 'plus',
+  INTEREST_PAYMENT: 'diamond',
+  DIRECT_DEBIT: 'building'
+};
+
+export const sourceDisplay = {
+  MASTER_CARD: 'Card',
+  FASTER_PAYMENTS_OUT: 'Outbound Payment',
+  FASTER_PAYMENTS_IN: 'Inbound Payment',
+  STRIPE_FUNDING: 'Account Funded',
+  INTEREST_PAYMENT: 'Interest',
+  DIRECT_DEBIT: 'Direct Debit'
+};
+
+export const lookup = key => {
+  return {
+    in: map => {
+      return {
+        orDefault: value => {
+          return map[key] || value;
+        }
+      }
+    }
+  }
+};
+
+
+export const amountDisplay = (amount, currency) => {
+  const currencySymbol = lookup(currency).in(currencySymbols).orDefault('£');
+    if (amount < 0) {
+      return '-' + currencySymbol + (-amount).toFixed(2).toString();
+    } else {
+      return currencySymbol + (amount).toFixed(2).toString();
+    }
+};
