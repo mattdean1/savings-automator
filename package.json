@@ -118,7 +118,7 @@
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.0",
     "semantic-ui-react": "^0.67.1",
-    "starling-developer-sdk": "^0.0.9",
+    "starling-developer-sdk": "latest",
     "style-loader": "^0.13.1",
     "uid-safe": "^2.1.4",
     "url-loader": "^0.5.6",
