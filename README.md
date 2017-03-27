@@ -65,14 +65,18 @@ The missing bits of config are specific to your account - your application, your
 
 You can fill in this config as suits your use-case, be it personal access, sandbox, or oauth/production. 
 
-
-
+### OAuth/Production
 Simply replace `<application client id>` and `<application client secret>` with the `client_id` and `client_secret` for your application.
 
-
-Then start the app in production using the following command
-```bash
-node server/main.js
+```JSON
+{
+  "clientId": "<application client id>",
+  "clientSecret": "<application client secret>",
+  
+  ...
+  
+  "oauthRedirectUri": "http://localhost:3000/api/oauth/redirect"
+}
 ```
 
 #### Sandbox
@@ -82,7 +86,8 @@ For the sandbox environment setup, use the config file, `config.json`, correctly
   "clientId": "<application client id>",
   "clientSecret": "<application client secret>",
   
- "sandboxApi": "https://api-sandbox.starlingbank.com/",
+  ...
+ 
   "initialRefresh": "<Refresh token from Starling Developers site>",
 }
 ```
@@ -95,20 +100,15 @@ Note: the current implementation requires the refresh token to be replaced on se
 </blockquote>
 
 #### Personal Access
-This starter kit can also be used to access your own Starling Bank data, right out of the box. This can be achieved using `config_personal.json`.
+This starter kit can also be used to access your own Starling Bank data, right out of the box. 
+This can be achieved by entering your token into the `config.json` file under `personalAccessToken`.
+
 ```JSON
 {
-  "cookieSecret": "21e361d0-ff2c-4763-a084-1032f2103ce8",
-  "partnerApiBase": "https://api.starlingbank.com",
-  "initialRefresh": "<personal access token>"
+  "personalAccessToken": "<personal access token>",
 }
 ```
-Where the `<personal access token>` is your personal access token, which can be obtained from your [developer account](https://developer.starlingbank.com/token) after linking it to your customer account.
-
-You can then start the application for use with personal access tokens
-```bash
-yarn run dev
-```
+Your personal access token can be obtained from your [developer account](https://developer.starlingbank.com/token) after linking it to your customer account.
 
 ## Mobile Starter Kit Users
 
