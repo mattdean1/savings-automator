@@ -73,8 +73,6 @@ Simply replace `<application client id>` and `<application client secret>` with 
   "clientId": "<application client id>",
   "clientSecret": "<application client secret>",
   
-  ...
-  
   "oauthRedirectUri": "http://localhost:3000/api/oauth/redirect"
 }
 ```
@@ -85,8 +83,6 @@ For the sandbox environment setup, use the config file, `config.json`, correctly
 {
   "clientId": "<application client id>",
   "clientSecret": "<application client secret>",
-  
-  ...
  
   "initialRefresh": "<Refresh token from Starling Developers site>",
 }
