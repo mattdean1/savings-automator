@@ -92,7 +92,7 @@ Where the `<refresh token>` is a sandbox customer's token from the [sandbox envi
 You can then start then select the sandbox from the landing page of your application.
 
 <blockquote>
-Note: the current implementation requires the refresh token to be replaced on server restart. This is temporary, as a programatic way to retrieve an application's sandbox customer's is in the works.
+Note: the current implementation requires the refresh token to be replaced on server restart. This is temporary, as a programmatic method for retrieval of an application's sandbox customers is in the works.
 </blockquote>
 
 #### Personal Access

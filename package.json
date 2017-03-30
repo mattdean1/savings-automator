@@ -75,7 +75,6 @@
     "type": "git",
     "url": "git+https://github.com/davezuko/react-redux-starter-kit.git"
   },
-  "author": "David Zukowski <david@zuko.me> (http://zuko.me)",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.15.3",
@@ -117,7 +116,7 @@
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.0",
     "semantic-ui-react": "^0.67.1",
-    "starling-developer-sdk": "^0.0.12",
+    "starling-developer-sdk": "^0.1.1",
     "style-loader": "^0.13.1",
     "uid-safe": "^2.1.4",
     "url-loader": "^0.5.6",

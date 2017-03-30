@@ -5701,9 +5701,9 @@ stackframe@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-0.3.1.tgz#33aa84f1177a5548c8935533cbfeb3420975f5a4"
 
-starling-developer-sdk@^0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/starling-developer-sdk/-/starling-developer-sdk-0.0.12.tgz#c0bebbae24f5f53ea51e175efa5c1ff17cd58efb"
+starling-developer-sdk@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/starling-developer-sdk/-/starling-developer-sdk-0.1.1.tgz#ffdda07c723568cd0b42ea11073c540c15ed0c3a"
   dependencies:
     axios "^0.10.0"
     debug "^2.2.0"
