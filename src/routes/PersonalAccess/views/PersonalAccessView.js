@@ -1,9 +1,9 @@
 import React from "react";
 import URLSearchParams from "url-search-params";
-import { Loader, Grid, Container, Segment, Header, Icon, Button } from "semantic-ui-react";
+import {Loader, Grid, Container, Segment, Header, Icon, Button} from "semantic-ui-react";
 import Dashboard from "../../../components/Dashboard/Dashboard";
 import UserDenied from "../../../components/UserDenied/UserDenied";
-import { Link } from 'react-router'
+import {Link} from 'react-router'
 
 class PersonalAccessView extends React.Component {
 
@@ -32,9 +32,12 @@ class PersonalAccessView extends React.Component {
     return (
       <Grid>
         <br/>
+
         {loading ? <Loading/>
-          : ( transactions && balance ?
-            <Dashboard mode={'Personal Access'} customer={customer} transactions={transactions} balance={balance}/> : <AnonymousProfile />)}
+          : ( balance ?
+            <Dashboard mode={'Personal Access'} customer={customer} transactions={transactions} balance={balance}/>
+            : <AnonymousProfile />)}
+
         {error && error === 'access_denied' ? <UserDenied/> : null}
       </Grid>
     )

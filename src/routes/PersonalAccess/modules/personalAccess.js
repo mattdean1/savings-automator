@@ -62,7 +62,7 @@ export const loadCustomer = () => {
   }
 };
 
-export const doTransactionFilter = (source) => {
+export const doPersonalTransactionFilter = (source) => {
   return dispatch => {
     getTransactions(source)
       .then(transactionResponse => {
@@ -70,7 +70,6 @@ export const doTransactionFilter = (source) => {
       })
       .catch((e) => {
         console.log(e);
-
       });
   }
 };

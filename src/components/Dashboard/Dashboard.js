@@ -1,5 +1,5 @@
 import React from "react";
-import {Grid, Container, Segment, Header, Statistic, Icon, Label, Image, Card, List, Button} from "semantic-ui-react";
+import {Grid, Container, Segment, Header, Statistic, Icon, Label, Image, Card, Loader, List, Button} from "semantic-ui-react";
 import {TransactionTable} from "../../components/TransactionTable/TransactionTable";
 import SelectorDropdown from "../../components/SelectorDropdown/SelectorDropdown";
 import './Dashboard.scss'
@@ -9,9 +9,9 @@ import {amountDisplay} from '../../commons/utils'
 class Dashboard extends React.Component {
 
   static propTypes = {
-    balance: React.PropTypes.shape().isRequired,
-    transactions: React.PropTypes.array.isRequired,
-    customer: React.PropTypes.shape().isRequired,
+    balance: React.PropTypes.shape(),
+    transactions: React.PropTypes.array,
+    customer: React.PropTypes.shape(),
     mode: React.PropTypes.string.isRequired,
   };
 
@@ -44,7 +44,7 @@ class Dashboard extends React.Component {
                 <Label as='a' color='orange' size="huge" ribbon={true}>Account Details</Label>
                 <Label as='a' className='tierLabel'>Tier 2</Label>
                 <br/>
-                <CustomerDetails customer={customer}/>
+                {customer ? <CustomerDetails customer={customer}/> : <Loader/>}
               </Segment>
             </Container>
           </Grid.Column>
@@ -56,7 +56,7 @@ class Dashboard extends React.Component {
                 <Label color='blue' size="huge" ribbon={true}>Balance</Label>
                 <Label className='tierLabel'>Tier 1</Label>
                 <Container textAlign="center">
-                  <Balance balance={balance}/>
+                  {balance ?  <Balance balance={balance}/> : <Loader/>}
                 </Container>
               </Segment>
             </Container>
@@ -67,9 +67,9 @@ class Dashboard extends React.Component {
           <Segment raised>
             <Label as='a' color='green' size="huge" ribbon={true}>Transactions</Label>
             <Label as='a' className='tierLabel'>Tier 1</Label>
-                <SelectorDropdown/>
+                <SelectorDropdown mode={mode}/>
             <br/>
-            <TransactionTable transactions={transactions}/>
+            {transactions ?  <TransactionTable transactions={transactions}/> : <Loader/>}
           </Segment>
         </Container>
       </div>

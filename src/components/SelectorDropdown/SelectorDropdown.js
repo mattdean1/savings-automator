@@ -3,7 +3,9 @@ import {Grid, Form, Button, Dropdown} from "semantic-ui-react";
 import {reduxForm, Field, formValueSelector, SubmissionError} from "redux-form";
 import {connect} from "react-redux";
 import {isEmpty, keys} from "lodash";
-import {doTransactionFilter} from "../../routes/OAuth/modules/oauth";
+import {doOAuthTransactionFilter} from "../../routes/OAuth/modules/oauth";
+import {doPersonalTransactionFilter} from "../../routes/PersonalAccess/modules/personalAccess";
+import {doSandboxTransactionFilter} from "../../routes/Sandbox/modules/sandbox";
 
 const onClick = (values, dispatch) => {
   return new Promise((resolve) => {
@@ -14,7 +16,13 @@ const onClick = (values, dispatch) => {
     if (keys(errors).length) {
       throw new SubmissionError(errors);
     } else {
-      dispatch(doTransactionFilter(values.source));
+      if (values.mode == 'Production') {
+        dispatch(doOAuthTransactionFilter(values.source));
+      } else if (values.mode == 'Personal Access') {
+        dispatch(doPersonalTransactionFilter(values.source));
+      } else {
+        dispatch(doSandboxTransactionFilter(values.source));
+      }
       resolve();
     }
   });
@@ -30,10 +38,16 @@ const options = [
 class SelectorDropdown extends React.Component {
 
   render () {
-    const {handleSubmit, submitting} = this.props;
+    const {handleSubmit, submitting, mode} = this.props;
     return (
       <Grid >
-        <Form style={{margin: "0 80px 0 auto"}} inverted loading={submitting} onSubmit={handleSubmit(onClick)}>
+        <Form style={{margin: "0 80px 0 auto"}} inverted loading={submitting} onSubmit={handleSubmit((data, dispatch) => {
+          const formParams = {
+            source: data.source,
+            mode
+          };
+          return onClick(formParams, dispatch)
+        })}>
           <Form.Group widths='equal'>
           <Field label="Filter Transactions" type="select" name="source" component={selectComponent}/>
           <Button primary disabled={submitting} type="submit">Select</Button>
