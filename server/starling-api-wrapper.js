@@ -7,7 +7,6 @@ const REFRESH_TOKEN_EARLY_OFFSET_SECS = 10;
 const REFRESH_TOKEN_GRANT_TYPE = 'refresh_token';
 
 const resolveWithJsonAtPath = (log, promise, res, path) => {
-  debug(log);
   return promise
     .then(response => {
       debug('Received', log, 'returning path', path);
@@ -20,7 +19,7 @@ const resolveWithJsonAtPath = (log, promise, res, path) => {
     });
 };
 
-const transactions = (req, res, client, accessToken) => resolveWithJsonAtPath('my transactions', client.getTransactions(req.query.fromDate = undefined, req.query.toDate = undefined, req.query.source, accessToken), res, 'data._embedded.transactions');
+const transactions = (req, res, client, accessToken) => resolveWithJsonAtPath('my transactions', client.getTransactions(accessToken, req.query.fromDate = undefined, req.query.toDate = undefined, req.query.source), res, 'data._embedded.transactions');
 const balance = (req, res, client, accessToken) => resolveWithJsonAtPath('my balance', client.getBalance(accessToken), res, 'data');
 const customer = (req, res, client, accessToken) => resolveWithJsonAtPath('my customer', client.getCustomer(accessToken), res, 'data');
 

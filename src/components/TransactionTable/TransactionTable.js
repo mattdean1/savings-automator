@@ -42,7 +42,7 @@ const TransactionItem = (props) => {
         <Icon size="large" name={itemClass} style={{textAlign: 'center'}}/>
       </td>
       <td>
-        {transaction.reference}
+        {transaction.narrative}
       </td>
       <td>
         {displaySource}

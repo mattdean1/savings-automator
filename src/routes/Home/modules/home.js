@@ -1,12 +1,9 @@
 import {handleActions, createAction} from "redux-actions";
-import {sourceUrlEncode} from '../../../commons/utils'
 
 // ------------------------------------
 // Constants
 // ------------------------------------
 const LOADING = 'LOADING';
-
-const loaderDelay = 100;
 // ------------------------------------
 // Actions
 // ------------------------------------
