@@ -56,9 +56,9 @@ const AnonymousProfile = () => {
       <Segment size="large" textAlign="center">
         <Header as="h2" icon={true}>
           <Icon name="warning sign"/>
-          No Sandbox Token
+          Access Denied
           <Header.Subheader>
-            Enter one in the server config file.
+            Check the sandbox refresh token in the server config is valid and try again.
           </Header.Subheader>
         </Header>
       </Segment>
