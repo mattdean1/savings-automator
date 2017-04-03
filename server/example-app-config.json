@@ -1,14 +1,14 @@
 {
-  "clientId": "",
-  "clientSecret": "",
+  "clientId": "<application client id>",
+  "clientSecret": "<application client secret>",
 
   "cookieSecret": "21e361d0-ff2c-4763-a084-1032f2103ce8",
 
   "productionApi": "https://api.starlingbank.com",
-  "personalAccessToken": "rJD3pRnquX7UNp7KWP9eyorZxod1MA02tAYwleVu6NlRfyj2huFbkbfjz22PgdyD",
+  "personalAccessToken": "<personal access token>",
 
   "sandboxApi": "https://api-sandbox.starlingbank.com/",
-  "initialRefresh": "<Refresh token from Starling Developers site>",
+  "initialRefresh": "<refresh token from Starling Developers site>",
 
   "oauthApi": "https://oauth.starlingbank.com",
   "oauthRedirectUri": "http://localhost:3000/api/oauth/redirect"
