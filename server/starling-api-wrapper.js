@@ -32,7 +32,6 @@ const customer = (req, res, client, accessToken) => resolveWithJsonAtPath('my cu
  * the refresh token is used to obtain a new access token and refresh token
  */
 const oauthAccessTokenMiddleware = (req, res, next) => {
-  debug('oauthAccessTokenMiddleware');
   const accessToken = req.session.accessToken;
   const accessTokenExpiry = req.session.accessTokenExpiry;
 
@@ -60,15 +59,13 @@ const oauthAccessTokenMiddleware = (req, res, next) => {
  * If the access token is present and has expired, the refresh token is used to obtain a new access token and refresh token
  */
 const sandboxAccessTokenMiddleware = (req, res, next) => {
-  debug('sandboxAccessTokenMiddleware');
   const accessToken = req.session.accessToken;
   const accessTokenExpiry = req.session.accessTokenExpiry;
-
   if (!accessToken || accessTokenExpiry <= new Date()) {
     const refreshToken = req.session.refreshToken ? req.session.refreshToken : config.initialRefresh;
-    refreshAccessToken(refreshToken)
+    refreshAccessToken(refreshToken, 'sandbox')
       .then(response => {
-        debug("New Refresh Token", response.data.refresh_token);
+        debug("New Refresh Token - ", response.data.refresh_token);
         saveAccessTokenToSession(response.data, req);
         next();
       })
@@ -98,21 +95,22 @@ const saveAccessTokenToSession = (accessTokenResponse, req) => {
  * Calls the Starling authorisation endpoint to exchange the refresh token for a new access and refresh token.
  * This is typically used when the access token is expired.
  */
-const refreshAccessToken = refreshToken => {
+const refreshAccessToken = (refreshToken, environment = 'production') => {
   return getOAuthToken({
     refresh_token: refreshToken,
     grant_type: REFRESH_TOKEN_GRANT_TYPE,
     client_id: config.clientId,
-    client_secret: config.clientSecret
-  });
+    client_secret: config.clientSecret,
+  }, environment);
 };
 
 /**
  * Starling upstream resource to retrieve an access token (or refresh token)
  */
-const getOAuthToken = params => {
+const getOAuthToken = (params, environment) => {
+  const url = environment === 'sandbox' ? config.sandboxApi : config.productionApi;
   return axios({
-    url: `${config.productionApi}/oauth/access-token`,
+    url: `${url}/oauth/access-token`,
     method: 'post',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'

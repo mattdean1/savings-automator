@@ -39,7 +39,7 @@ class OAuthView extends React.Component {
         <br/>
         {loading ? <Loading/>
           : ( transactions && balance ?
-            <Dashboard mode={'oauth'} customer={customer} transactions={transactions} balance={balance}/> : <AnonymousProfile />)}
+            <Dashboard mode={'Production'} customer={customer} transactions={transactions} balance={balance}/> : <AnonymousProfile />)}
         {error && error === 'access_denied' ? <UserDenied/> : null}
       </Grid>
     )

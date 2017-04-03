@@ -34,7 +34,7 @@ class SandboxView extends React.Component {
         <br/>
         {loading ? <Loading/>
           : ( transactions && balance && customer ?
-            <Dashboard mode={'sandbox'} customer={customer} transactions={transactions} balance={balance}/> :
+            <Dashboard mode={'Sandbox'} customer={customer} transactions={transactions} balance={balance}/> :
             <AnonymousProfile />)}
         {error && error === 'access_denied' ? <UserDenied/> : null}
       </Grid>
