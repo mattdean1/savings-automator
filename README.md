@@ -12,7 +12,7 @@
 This project contains a sample web application that integrates with the Starling Bank API to retrieve a customer's transaction history.
 The React Redux application is based on [this starter kit](https://github.com/davezuko/react-redux-starter-kit) and is comprised of a simple REST API written in javascript using node.js with express. The 
 
-Looking for the [Mobile Starter Kit](https://github.com/starlingbank/developer-api-mobile-app-starter) instead?
+Looking for the [Mobile Starter Kit](https://github.com/starlingbank/starling-api-mobile-starter-kit) instead?
 
 ## Getting Started
 Please also take a look at the higher-level [Getting Started Guide](http://developer.starlingbank.com/get-started) on our site, which covers usage of our API as a whole.
@@ -55,7 +55,7 @@ The `config.json` file will look like this
   "personalAccessToken": "<personal access token>",
 
   "sandboxApi": "https://api-sandbox.starlingbank.com/",
-  "initialRefresh": "<Refresh token from Starling Developers site>",
+  "initialRefresh": "<refresh token from Starling Developers site>",
 
   "oauthApi": "https://oauth.starlingbank.com",
   "oauthRedirectUri": "http://localhost:3000/api/oauth/redirect"
@@ -108,4 +108,4 @@ Your personal access token can be obtained from your [developer account](https:/
 
 ## Mobile Starter Kit Users
 
-Those using the [React Native mobile starter kit](https://github.com/starlingbank/developer-api-mobile-app-starter) need to also clone this repo and follow the installation instructions above, while replacing the contents of the `config.json` file with that given in the mobile starter kit [README.md](https://github.com/starlingbank/developer-api-mobile-app-starter)   
+Those using the [React Native mobile starter kit](https://github.com/starlingbank/developer-api-mobile-app-starter) need to also clone this repo and follow the installation instructions above, while replacing the contents of the `config.json` file with that given in the mobile starter kit [README.md](https://github.com/starlingbank/starling-api-mobile-starter-kit)   
