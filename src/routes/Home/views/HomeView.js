@@ -1,11 +1,7 @@
-import React from 'react'
-import './HomeView.scss'
-import URLSearchParams from 'url-search-params'
-import {Loader, Message, Statistic, Grid, Container, Segment, Header, Image, Icon, Label, Button} from 'semantic-ui-react'
-import {TransactionTable} from '../../../components/TransactionTable/TransactionTable'
-import {amountDisplay} from '../../../commons/utils'
-import connect from '../../../assets/Oauth-button.png'
-import { Link } from 'react-router'
+import React from "react";
+import URLSearchParams from "url-search-params";
+import {Grid, Container, Segment, Header, Button, Icon} from "semantic-ui-react";
+import {Link} from "react-router";
 
 class HomeView extends React.Component {
 
@@ -19,55 +15,61 @@ class HomeView extends React.Component {
   render () {
     const urlParams = new URLSearchParams(window.location.search);
     const error = urlParams.get('error');
-    const {loading, transactions, balance, customer} = this.props.home;
     return (
-
-        <Segment raised>
+      <Container>
+        <Segment raised style={{marginTop: 'calc(10% + 100px)'}}>
           <Container>
-            <Grid columns={3} stackable divided={true} textAlign="center">
-              <br/>
-        <Header>Select your use case</Header>
-        <Grid.Row>
-          <Grid.Column>
-            <Segment textAlign="center">
-           <Link to="/oauth">
-              <Button>OAuth</Button>
-            </Link>
-            </Segment>
-          </Grid.Column>
-          <Grid.Column>
-            <Segment textAlign="center">
-              <Link to="/sandbox">
-              <Button>Sandbox</Button>
-            </Link></Segment>
-          </Grid.Column>
-          <Grid.Column>
-            <Segment textAlign="center"> <Link to="/personal">
-              <Button color="blue">Personal Access</Button>
-            </Link></Segment>
-          </Grid.Column>
-        </Grid.Row>
+            <Grid relaxed={true} columns={3} stackable divided={true} textAlign="center">
+              <Grid.Row>
+                <Grid.Column>
+                  <Segment textAlign="center" style={{border: 'none', boxShadow: 'none'}}>
+                    <Header as="h3" icon={true}>
+                      <Icon name="users" size="large"/>
+                      Production Access
+                      <Header.Subheader>
+                        Onboard real customers <br/>through the OAuth flow.
+                      </Header.Subheader>
+                    </Header>
+                    <br/>
+                    <Link to="/oauth">
+                      <Button color="green">Enter</Button>
+                    </Link>
+                  </Segment>
+                </Grid.Column>
+                <Grid.Column>
+                  <Segment textAlign="center" style={{border: 'none', boxShadow: 'none'}}>
+                    <Header as="h3" icon={true}>
+                      <Icon name="code" size="large"/>
+                      Sandbox Access
+                      <Header.Subheader>
+                        Test your application with <br/>your sandbox customers.
+                      </Header.Subheader>
+                    </Header>
+                    <br/>
+                    <Link to="/sandbox">
+                      <Button color="orange">Enter</Button>
+                    </Link></Segment>
+                </Grid.Column>
+                <Grid.Column>
+                  <Segment textAlign="center" style={{border: 'none', boxShadow: 'none'}}>
+                    <Header as="h3" icon={true}>
+                      <Icon name="home" size="large"/>
+                      Personal Access
+                      <Header.Subheader>
+                        View your own account <br/>and transaction data.
+                      </Header.Subheader>
+                    </Header><br/>
+                    <Link to="/personal">
+                      <Button color="blue">Enter</Button>
+                    </Link></Segment>
+                </Grid.Column>
+              </Grid.Row>
             </Grid>
           </Container>
         </Segment>
+      </Container>
     )
   }
 }
-
-const Loading = () => {
-  return (
-    <Loader active size="large"/>
-  );
-};
-
-
-const UserDenied = () => {
-  return (
-    <Message size="small">
-      <Header>User Denied Access</Header>
-      <p>When a user denies access Starling will callback with an error code</p>
-    </Message>
-  );
-};
 
 export default HomeView

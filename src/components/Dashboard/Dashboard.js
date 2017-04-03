@@ -1,12 +1,10 @@
 import React from "react";
-import "../../routes/OAuth/views/OAuthView.scss";
 import {Grid, Container, Segment, Header, Statistic, Icon, Label, Image, Card, List, Button} from "semantic-ui-react";
 import {TransactionTable} from "../../components/TransactionTable/TransactionTable";
 import SelectorDropdown from "../../components/SelectorDropdown/SelectorDropdown";
 import './Dashboard.scss'
 import { Link } from 'react-router'
 import {amountDisplay} from '../../commons/utils'
-
 
 class Dashboard extends React.Component {
 
@@ -93,7 +91,6 @@ const Balance = (props) => {
 
 const CustomerDetails = (props) => {
   const {firstName, lastName, email, phone, dateOfBirth} = props.customer;
-  // const displayBalance = amountDisplay(props.balance.amount, props.balance.currency);
   return (
     <List animated size="large" style={{margin: '1em 2em'}} verticalAlign="bottom">
       <List.Item>

@@ -1,8 +1,9 @@
 import React from "react";
-import "./SandboxView.scss";
 import URLSearchParams from "url-search-params";
-import {Loader, Grid, Header, Container, Message} from "semantic-ui-react";
+import {Loader, Grid, Button, Header, Container, Message, Segment, Icon} from "semantic-ui-react";
 import Dashboard from "../../../components/Dashboard/Dashboard";
+import {Link} from 'react-router'
+import UserDenied from '../../../components/UserDenied/UserDenied'
 
 class SandboxView extends React.Component {
 
@@ -20,6 +21,10 @@ class SandboxView extends React.Component {
     this.props.loadBalance();
   }
 
+  componentWillUnmount () {
+    window.location.href = ('/api/logout')
+  }
+
   render () {
     const urlParams = new URLSearchParams(window.location.search);
     const error = urlParams.get('error');
@@ -29,7 +34,8 @@ class SandboxView extends React.Component {
         <br/>
         {loading ? <Loading/>
           : ( transactions && balance && customer ?
-            <Dashboard mode={'sandbox'} customer={customer} transactions={transactions} balance={balance}/> : <AnonymousProfile />)}
+            <Dashboard mode={'sandbox'} customer={customer} transactions={transactions} balance={balance}/> :
+            <AnonymousProfile />)}
         {error && error === 'access_denied' ? <UserDenied/> : null}
       </Grid>
     )
@@ -44,20 +50,20 @@ const Loading = () => {
 
 const AnonymousProfile = () => {
   return (
-  <Message size="large" >
-    <Header>No Sandbox Token</Header>
-    <p>Enter one in the server config file.</p>
-  </Message>
+    <Container>
+      <Link to="/">
+        <Button>{`< Back`}</Button> </Link>
+      <Segment size="large" textAlign="center">
+        <Header as="h2" icon={true}>
+          <Icon name="warning sign"/>
+          No Sandbox Token
+          <Header.Subheader>
+            Enter one in the server config file.
+          </Header.Subheader>
+        </Header>
+      </Segment>
+    </Container>
 
-  );
-};
-
-const UserDenied = () => {
-  return (
-    <Message size="large">
-      <Header>User Denied Access</Header>
-      <p>When a user denies access Starling will callback with an error code</p>
-    </Message>
   );
 };
 
