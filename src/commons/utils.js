@@ -1,11 +1,3 @@
-const pick = require('lodash');
-
-const SAFE_INPUT_PROPS = ['name', 'value', 'onBlur', 'onChange', 'onDragStart', 'onDrop',
-  'onFocus'];
-export const safeInputPropsOf = (fieldConfig) => pick(fieldConfig, SAFE_INPUT_PROPS);
-
-
-
 export const sourceUrlEncode = (source) => {
   if (source === 'MASTER_CARD' || source === 'mastercard') {
     return '/mastercard';
@@ -19,13 +11,6 @@ export const sourceUrlEncode = (source) => {
     return ''
   }
 };
-
-export const dateRangeEncode = (fromDate, toDate) => {
-  const from = fromDate !== 'none' ? fromDate : null;
-  const to = toDate !== 'none' ? toDate : null;
-  return to && from ? '?from=' + fromDate + '&' + 'to=' + toDate : ''
-};
-
 
 export const currencySymbols = {
   GBP: '£',

@@ -7,8 +7,11 @@
   "productionApi": "https://api.starlingbank.com",
   "personalAccessToken": "<personal access token>",
 
+  "SANDBOX_CONFIG_COMMENT": "Do not keep the token store file in the app root dir or it will restart when you are watching it with yarn run dev everytime it is written to!",
+  "sandboxLocalTokenStore": "../starling-api-web-starter-kit-sandbox-token-store.json",
   "sandboxApi": "https://api-sandbox.starlingbank.com/",
-  "initialRefresh": "<refresh token from Starling Developers site>",
+  "sandboxAccessToken": "<sandbox access token from Starling Developers site>",
+  "refreshToken": "<refresh token from Starling Developers site>",
 
   "oauthApi": "https://oauth.starlingbank.com",
   "oauthRedirectUri": "http://localhost:3000/api/oauth/redirect"
