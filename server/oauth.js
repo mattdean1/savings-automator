@@ -1,4 +1,4 @@
-const config = require('./example-app-config');
+const config = require('./config');
 const debug = require('debug')('app:oauth');
 
 const uid = require('uid-safe');

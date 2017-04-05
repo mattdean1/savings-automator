@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const debug = require('debug')('app:starling-api-wrapper');
 const axios = require('axios');
-const config = require('./example-app-config');
+const config = require('./config');
 
 const REFRESH_TOKEN_EARLY_OFFSET_SECS = 10;
 const REFRESH_TOKEN_GRANT_TYPE = 'refresh_token';
