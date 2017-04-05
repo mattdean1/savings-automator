@@ -2,7 +2,7 @@ const path = require('path')
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const config = require('./example-app-config');
+const config = require('./config');
 
 const personalApp = require('./personal');
 const sandboxApp = require('./sandbox');

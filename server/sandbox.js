@@ -1,4 +1,4 @@
-const config = require('./example-app-config');
+const config = require('./config');
 const Starling = require('starling-developer-sdk');
 const starlingApiWrapper = require('./starling-api-wrapper');
 const start = (app) => {
