@@ -2,6 +2,7 @@ const _ = require('lodash');
 const debug = require('debug')('app:starling-api-wrapper');
 const axios = require('axios');
 const config = require('./config');
+const persistence = require('./persistence');
 
 const REFRESH_TOKEN_EARLY_OFFSET_SECS = 10;
 const REFRESH_TOKEN_GRANT_TYPE = 'refresh_token';
@@ -14,10 +15,10 @@ const resolveWithJsonAtPath = (log, promise, res, path) => {
     })
     .catch((e) => {
       debug('Error getting', log);
-    debug(e.data.error);
-    debug(e.status);
-    debug(e.data.error_description);
-    debug(' ');
+      debug(e.data.error);
+      debug(e.status);
+      debug(e.data.error_description);
+      debug(' ');
       return res.status(403).send(e.data.error);
     });
 };
@@ -55,29 +56,6 @@ const oauthAccessTokenMiddleware = (req, res, next) => {
 };
 
 /**
- * Checks for the presence of the access token in the user session.
- * If the access token is present and has expired, the refresh token is used to obtain a new access token and refresh token
- */
-const sandboxAccessTokenMiddleware = (req, res, next) => {
-  const accessToken = req.session.accessToken;
-  const accessTokenExpiry = req.session.accessTokenExpiry;
-  if (!accessToken || accessTokenExpiry <= new Date()) {
-    const refreshToken = req.session.refreshToken ? req.session.refreshToken : config.initialRefresh;
-    refreshAccessToken(refreshToken, 'sandbox')
-      .then(response => {
-        debug("New Refresh Token - ", response.data.refresh_token);
-        saveAccessTokenToSession(response.data, req);
-        next();
-      })
-      .catch(() => {
-        res.status(500).send({error: 'ACCESS_TOKEN_REFRESH_ERROR'});
-      });
-  } else {
-    next()
-  }
-};
-
-/**
  * Persists the access token and refresh token to the user session. This is called when
  *
  *   1) the access code is exchanged for the access and refresh tokens and
@@ -96,12 +74,14 @@ const saveAccessTokenToSession = (accessTokenResponse, req) => {
  * This is typically used when the access token is expired.
  */
 const refreshAccessToken = (refreshToken, environment = 'production') => {
-  return getOAuthToken({
+  const params = {
     refresh_token: refreshToken,
     grant_type: REFRESH_TOKEN_GRANT_TYPE,
     client_id: config.clientId,
     client_secret: config.clientSecret,
-  }, environment);
+  };
+  debug('refreshAccessToken :: ', params, environment);
+  return getOAuthToken(params, environment);
 };
 
 /**
@@ -109,6 +89,7 @@ const refreshAccessToken = (refreshToken, environment = 'production') => {
  */
 const getOAuthToken = (params, environment) => {
   const url = environment === 'sandbox' ? config.sandboxApi : config.productionApi;
+  debug('getOAuthToken :: ', url, params, environment);
   return axios({
     url: `${url}/oauth/access-token`,
     method: 'post',
@@ -119,4 +100,4 @@ const getOAuthToken = (params, environment) => {
   });
 };
 
-module.exports = { getOAuthToken, saveAccessTokenToSession, sandboxAccessTokenMiddleware, oauthAccessTokenMiddleware, transactions, balance, customer };
+module.exports = { getOAuthToken, saveAccessTokenToSession, refreshAccessToken, oauthAccessTokenMiddleware, transactions, balance, customer };
