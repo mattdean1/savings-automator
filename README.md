@@ -54,8 +54,11 @@ The `config.json` file will look like this
   "productionApi": "https://api.starlingbank.com",
   "personalAccessToken": "<personal access token>",
 
+  "SANDBOX_CONFIG_COMMENT": "Do not keep the store file in the app root dir or it will restart everytime it is written to!",
+  "sandboxLocalTokenStore": "../starling-api-web-starter-kit-sandbox-token-store.json",
   "sandboxApi": "https://api-sandbox.starlingbank.com/",
-  "initialRefresh": "<refresh token from Starling Developers site>",
+  "sandboxAccessToken": "<sandbox access token from Starling Developers site>",
+  "refreshToken": "<refresh token from Starling Developers site>",
 
   "oauthApi": "https://oauth.starlingbank.com",
   "oauthRedirectUri": "http://localhost:3000/api/oauth/redirect"
@@ -65,7 +68,7 @@ The missing bits of config are specific to your account - your application, your
 
 You can fill in this config as suits your use-case, be it personal access, sandbox, or oauth/production. 
 
-### OAuth/Production
+#### OAuth/Production
 Simply replace `<application client id>` and `<application client secret>` with the `client_id` and `client_secret` for your application.
 
 ```JSON
@@ -84,10 +87,15 @@ For the sandbox environment setup, use the config file, `config.json`, correctly
   "clientId": "<application client id>",
   "clientSecret": "<application client secret>",
  
-  "initialRefresh": "<Refresh token from Starling Developers site>",
+  "SANDBOX_CONFIG_COMMENT": "Do not keep the store file in the app root dir or it will restart everytime it is written to!",
+  "sandboxLocalTokenStore": "../starling-api-web-starter-kit-sandbox-token-store.json",
+  "sandboxApi": "https://api-sandbox.starlingbank.com/",
+  
+  "sandboxAccessToken": "<sandbox access token from Starling Developers site>",
+  "refreshToken": "<refresh token from Starling Developers site>",
 }
 ```
-Where the `<refresh token>` is a sandbox customer's token from the [sandbox environment](https://developer.starlingbank.com/sandbox).
+Where the `sandboxAccessToken` and `refreshToken` are the sandbox customer's access and refresh tokens from the [sandbox environment](https://developer.starlingbank.com/sandbox).
 
 You can then start then select the sandbox from the landing page of your application.
 
