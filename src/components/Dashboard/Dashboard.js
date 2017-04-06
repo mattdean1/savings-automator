@@ -1,5 +1,4 @@
 import React from "react"
-<<<<<<< HEAD
 import {
   Grid,
   Container,
