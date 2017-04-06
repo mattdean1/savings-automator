@@ -1,6 +1,6 @@
 import React from "react";
 import {lookup, iconClasses, amountDisplay, sourceDisplay} from "../../commons/utils";
-import {Container, Table, Icon} from "semantic-ui-react";
+import {Container, Table, Icon, Header} from "semantic-ui-react";
 
 
 export const TransactionTable = (props) => {
@@ -8,6 +8,7 @@ export const TransactionTable = (props) => {
   const transactions = props.transactions.map(
     (transaction, index) => <TransactionItem key={index} transaction={transaction}/>);
 
+  if (props.transactions) {
   return (
     <Container>
       <Table selectable>
@@ -27,6 +28,17 @@ export const TransactionTable = (props) => {
       </Table>
     </Container>
   );
+
+} else {
+  return (
+    <div>
+      <Header as="h2" icon={true} textAlign="center">
+        <Icon name="warning sign" size="large"/>
+        Error loading Transactions API
+      </Header>
+    </div>
+  )
+}
 };
 
 const TransactionItem = (props) => {

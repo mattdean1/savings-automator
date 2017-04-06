@@ -16,7 +16,7 @@ body {
 
 body {
   background: #373A3C;
-  margin: 130px;
+  margin: 50px auto;
   padding: 0;
   font-family: sans-serif;
   height:0;
@@ -31,7 +31,7 @@ body {
 }
 
 .headerMargin {
-  margin-bottom: 100px;
+  margin-bottom: 110px;
 }
 
 .fw {
@@ -47,11 +47,11 @@ body {
 }
 
 .App-logo {
-  margin-left: 4em;
+  margin-left: 3em;
 }
 
 .App-header {
-  height: 100px;
+  height: 80px;
   margin: 20px;
   color: #000000;
 }
@@ -69,11 +69,11 @@ body {
 }
 
 .brand {
-  font-size: 30px;
+  font-size: 25px;
   color: #FFFFFF;
   letter-spacing: 2px;
-  padding-left: 20px;
-  padding-right: 50px;
+  padding-left: 10px;
+  padding-right: 20px;
 }
 
 div.ui.top.inverted.fixed.menu {
@@ -93,7 +93,7 @@ div.ui.top.inverted.fixed.menu {
 }
 
 .headerPadding {
-  padding: 10px !important;
+  padding: 5px !important;
 }
 
 .header-text {

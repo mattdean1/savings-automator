@@ -1,6 +1,5 @@
 import React from "react";
 import {Link} from "react-router";
-import "./Header.scss";
 import {Menu, Image} from "semantic-ui-react";
 import logo from "../../assets/safe-logo.png";
 
@@ -9,7 +8,7 @@ export const Header = () => (
     <Menu fixed="top" inverted>
       <Link to="/">
       <Menu.Item className="headerPadding">
-        <Image src={logo} className="ui image App-logo" alt="logo" width='80px'/>
+        <Image src={logo} className="ui image App-logo" alt="logo" width='60px'/>
         <p className='brand'>AllSafe</p>
       </Menu.Item>
       </Link>
@@ -20,6 +19,6 @@ export const Header = () => (
       </Menu.Menu>
     </Menu>
   </div>
-)
+);
 
 export default Header
