@@ -83,6 +83,11 @@ class Dashboard extends React.Component {
 const Balance = (props) => {
   const {balance} = props;
   if (balance) {
+
+    if (balance.effectiveBalance === undefined) {
+      return <OldBalance balance={balance} />
+    }
+
     const effectiveBalance = balance.effectiveBalance ? amountDisplay(balance.effectiveBalance, balance.currency) : null;
     const clearedBalance = balance.effectiveBalance ? amountDisplay(balance.clearedBalance, balance.currency) : null;
     const pendingTransactions = balance.pendingTransactions;
@@ -119,6 +124,17 @@ const Balance = (props) => {
       </div>
     )
   }
+};
+
+// While the API is different in demo and prod
+const OldBalance = ({balance}) => {
+  return balance.amount ? <div>
+    <Statistic size="tiny" style={{textAlign: "center", marginTop: "-40px"}} color="blue">
+      <Icon name="diamond" size="huge" style={{textAlign: "center", margin: '10px auto'}}/>
+      <Statistic.Value>{balance.amount ? amountDisplay(balance.amount, balance.currency) : null}</Statistic.Value>
+      <Statistic.Label>Balance</Statistic.Label>
+    </Statistic>
+  </div> : null;
 };
 
 const CustomerDetails = (props) => {
