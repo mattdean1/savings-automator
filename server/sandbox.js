@@ -90,7 +90,13 @@ const start = (app) => {
     starlingApiWrapper.customer(req, res, starlingClient, getAccessToken(db));
   });
   app.get('/api/sandbox/balance', (req, res) => starlingApiWrapper.balance(req, res, starlingClient, getAccessToken(db)));
-
+  app.get('/api/sandbox/ping', (req, res) => {
+    console.log('called');
+      client.get('hardcoded', (err, resp) => {
+        console.log(resp);
+        res.json(resp);
+      });
+  });
   app.get('/api/sandbox/transactions', (req, res) =>{
   starlingApiWrapper.transactions(req, res, starlingClient, getAccessToken(db)).
   then(function(resp){
@@ -139,11 +145,6 @@ const start = (app) => {
             client.setex('hardcoded', 60*60*24, 'true');
       });
       res.json(_.get(resp, 'data._embedded.transactions', []))
-  });
-  app.get('/api/sandbox/ping', (req, res) => {
-      client.get('hardcoded', (err, resp) => {
-        res.send(resp);
-      });
   });
 });
 }
