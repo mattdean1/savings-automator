@@ -165,7 +165,6 @@
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0"
   },
-  "productionDependencies"
   "babel": {
     "presets": [
       [
