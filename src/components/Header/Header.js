@@ -8,8 +8,8 @@ export const Header = () => (
     <Menu fixed='top' inverted>
       <Link to='/'>
         <Menu.Item className=''>
-          <Image src='' className='ui image' alt='Back' width='60px' />
-          <p className='brand'>Automatic Savings</p>
+          {/* <Image src='' className='ui image' alt='Back' width='60px' /> */}
+          <p style={{ color: '#1E1937' }} className='brand'>Automatic Savings</p>
         </Menu.Item>
       </Link>
     </Menu>
