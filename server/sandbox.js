@@ -127,9 +127,10 @@ const start = (app) => {
 });
   app.post('/api/sandbox/webhook', (req, res) => {
     console.log('Something received');
+      console.log(res);
     starlingApiWrapper.transactions(req, res, starlingClient, getAccessToken(db)).
     then(function(resp){
-          client.setex('hardcoded', 60*60*24, 'false');
+      client.setex('hardcoded', 60*60*24, 'false');
       console.log('Received webhook');
       var list = _.get(resp, 'data._embedded.transactions', []);
       var promises = [];
@@ -146,6 +147,31 @@ const start = (app) => {
       });
       res.json(_.get(resp, 'data._embedded.transactions', []))
   });
+  
+  if(res){
+    client.get('IN_Income_Savings', (err, resp) => {
+      if(Number(resp)){
+        starlingApiWrapper.payment(starlingClient, getAccessToken(db), '1')
+      }
+    });
+  }
+  else{
+    var tax = 0;
+    client.get('OUT_RoundUp', (err2, resp2) => {
+      client.get('OUT_PersonalTax', (err3, resp3) => {
+        if(Number(resp2)){
+
+        }
+        if(Number(resp3)){
+
+        }
+        if(tax){
+          starlingApiWrapper.payment(starlingClient, getAccessToken(db), '1');
+        }
+      });
+    });
+  }
+
 });
 }
 module.exports = { start };

@@ -28,6 +28,10 @@ const transaction = (client, accessToken, transactionid) =>{
   console.log(accessToken + ' ' + transactionid);
 return client.getTransaction(accessToken, transactionid);
 }
+const payment = (client, accessToken, amount ) =>{
+  console.log(accessToken + ' ' + transactionid);
+return client.makeLocalPayment(accessToken, 'bb24f971-05c6-4310-ae3f-fb41b6c51a15', amount, 'SAVING');
+}
 /**
  * A middleware to check for the presence of the access token in the
  * user session. If the access token is present and has expired,
@@ -101,4 +105,4 @@ const getOAuthToken = (params, environment) => {
   });
 };
 
-module.exports = { transaction, getOAuthToken, saveAccessTokenToSession, refreshAccessToken, oauthAccessTokenMiddleware, transactions, balance, customer };
+module.exports = {payment, transaction, getOAuthToken, saveAccessTokenToSession, refreshAccessToken, oauthAccessTokenMiddleware, transactions, balance, customer };
