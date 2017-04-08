@@ -16,7 +16,10 @@ import {
   Button,
   Menu,
   Modal,
-  Input
+  Input,
+
+  Progress,
+  Checkbox
 } from 'semantic-ui-react'
 import SelectorDropdown from '../../components/SelectorDropdown/SelectorDropdown'
 import { Link } from 'react-router'
@@ -34,7 +37,7 @@ const styles = {
 const sampleGoals = [{
   title : 'Macbook Pro',
   goal : 1500,
-  raised : 346.54,
+  raised : 1500,
   percentage : 50,
   category: 'Technology',
   start_date : '08/03/17',
@@ -94,6 +97,7 @@ class Dashboard extends React.Component {
     const { customer, balance, transactions, mode } = this.props
     const { firstName } = customer
     const name = customer && firstName ? firstName + "'s Account" : 'Your Account'
+
     console.log('test')
     if (this.state.activeItem === 'plan') {
       return (
@@ -152,28 +156,56 @@ class Dashboard extends React.Component {
   }
 
   rulesView (goals) {
-    const newArray = goals.map((goal) => {
-      return (
-        <div key={goal.title} className='ui cards'>
-          <div style={{ width: '100%' }} className='card'>
-            <div className='content'>
-              <div className='header'>
-                {goal.title}
+    return (
+
+      <div className='ui cards'>
+        <div style={{ width: '100%' }} className='card'>
+          <Label attached='top'>Incoming</Label>
+          <div className='content'>
+            <div className='header'>
+              <div className='checkbox'>
+              Placeholder
+              <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
               </div>
             </div>
-            <div className='extra content'>
-              <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
-              <div style={{ float:'right' }} className='ui icon buttons'>
-                <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
-                <div className='increment ui basic green button icon'><i className='plus icon' /></div>
+          </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}><strong /></h4>
+            <div style={{ float:'left' }}>
+              <Input
+                label={{ basic: true, content: '%' }}
+                labelPosition='right'
+                placeholder='Enter Percentage'
+              />
+            </div>
+          </div>
+        </div>
+
+        <div style={{ width: '100%' }} className='card'>
+          <Label attached='top'>Outgoing</Label>
+          <div className='content'>
+            <div className='header'>
+              <div className='checkbox'>
+              Personal Tax
+              <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
+              </div>
+            </div>
+          </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>%</strong></h4>
+            <div style={{ float:'right' }} className='ui icon buttons' />
+          </div>
+          <div className='content'>
+            <div className='header'>
+              <div className='checkbox'>
+            Round-Up Change
+            <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
               </div>
             </div>
           </div>
         </div>
-      )
-    })
-    return (
-      <div>{ newArray }</div>
+
+      </div>
     )
   }
 

@@ -11,8 +11,9 @@
   "SANDBOX_CONFIG_COMMENT": "Do not keep the token store file in the app root dir or it will restart when you are watching it with yarn run dev everytime it is written to!",
   "sandboxLocalTokenStore": "../starling-api-web-starter-kit-sandbox-token-store.json",
   "sandboxApi": "https://api-sandbox.starlingbank.com/",
-  "sandboxAccessToken": "4RSxPlPZJcEgN9E70nxoPjetBWJ4N4P9WcKK50XNX2gYXTY7gfsd6BAG4txyPk6p",
-  "refreshToken": "qoNY1KXZjr8Tkwmy7vwqGvZ67NyZ72uCks6MuWdUnd8tq1VEcbf7UpA0JPG3c2KG",
+
+  "sandboxAccessToken": "05jiCLDshey5MEYuqyNnPmhn049oPfKJqYvkqj7qaa1j6NCj0NJfMDsuKN5tX1u7",
+  "refreshToken": "AN0ihDj0MpaLycdrqrhslBtauDqYkvWlR4hlWr8y7i0vn4Aly3zCkCBNyMgTfZkN",
 
   "oauthApi": "https://oauth.starlingbank.com",
   "oauthRedirectUri": "http://localhost:3000/callback"
