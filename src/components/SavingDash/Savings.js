@@ -12,7 +12,8 @@ import {
   Loader,
   List,
   Button,
-  Menu
+  Menu,
+  Progress
 } from 'semantic-ui-react'
 import SelectorDropdown from '../../components/SelectorDropdown/SelectorDropdown'
 import { Link } from 'react-router'
@@ -30,7 +31,7 @@ const styles = {
 const goals = [{
   title : 'Macbook Pro',
   goal : 1500,
-  raised : 346.54,
+  raised : 1500,
   percentage : 50,
   category: 'Technology',
   start_date : '08/03/17',
@@ -79,7 +80,7 @@ class Dashboard extends React.Component {
       <Grid.Column>
         {this.menu()}
         <Container style={{ maxWidth: '970px' }}>
-          {plans({ goals })}
+          {goalsView({ goals })}
         </Container>
       </Grid.Column>
     )
@@ -161,8 +162,9 @@ const Balance = (props) => {
   }
 }
 
-const plans = ({ goals }) => {
+const goalsView = ({ goals }) => {
   const newArray = goals.map((goal) => {
+    const percentRaised = (goal.raised / goal.goal) * 100
     return (
       <div key={goal.title} className='ui cards'>
         <div style={{ width: '100%' }} className='card'>
@@ -174,7 +176,7 @@ const plans = ({ goals }) => {
               £{goal.raised} out of £{goal.goal}
             </div>
             <div className='description'>
-              Estimated Saving Days: <strong>{goal.estimated_days}</strong>
+              Estimated Days To Achievement: <strong>{goal.estimated_days}</strong> 
             </div>
           </div>
           <div className='extra content'>
@@ -184,9 +186,11 @@ const plans = ({ goals }) => {
               <div className='increment ui basic green button icon'><i className='plus icon' /></div>
             </div> */}
           </div>
-          <div className='ui bottom attached progress'>
-            <div className='indicating bar' />
-          </div>
+          <Progress
+            percent={percentRaised}
+            attached='bottom'
+            color={percentRaised === 100 ? 'green' : 'violet'}
+          />
         </div>
       </div>
     )
