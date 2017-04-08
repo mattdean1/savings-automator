@@ -158,7 +158,7 @@
     "semantic-ui-react": "^0.67.1",
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
-    "starling-developer-sdk": "^0.1.1",
+    "starling-developer-sdk": "0.1.4",
     "style-loader": "^0.13.1",
     "uid-safe": "^2.1.4",
     "url-loader": "^0.5.6",

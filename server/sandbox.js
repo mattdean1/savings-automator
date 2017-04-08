@@ -147,31 +147,35 @@ const start = (app) => {
       });
       res.json(_.get(resp, 'data._embedded.transactions', []))
   });
-
-  if(res){
-    client.get('IN_Income_Savings', (err, resp) => {
-      if(Number(resp)){
-        starlingApiWrapper.payment(starlingClient, getAccessToken(db), '1')
-      }
-    });
-  }
-  else{
-    var tax = 0;
-    client.get('OUT_RoundUp', (err2, resp2) => {
-      client.get('OUT_PersonalTax', (err3, resp3) => {
-        if(Number(resp2)){
-
-        }
-        if(Number(resp3)){
-
-        }
-        if(tax){
-          starlingApiWrapper.payment(starlingClient, getAccessToken(db), '1');
+  if(req.body.content.reference !== SAVING){
+    if(res.body.content.type 'TRANSACTION_FASTER_PAYMENT_IN'){
+      client.get('IN_Income_Savings', (err, resp) => {
+        console.log('IN_Income_Savings')
+        if(Number(resp)){
+          starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + (req.body.content.amount * Number(resp3)/100 ));
         }
       });
-    });
-  }
+    }
+    else if(res.body.content.type 'TRANSACTION_FASTER_PAYMENT_OUT'){
+      var tax = 0;
+      client.get('OUT_RoundUp', (err2, resp2) => {
+        client.get('OUT_PersonalTax', (err3, resp3) => {
+          console.log('OUT_PersonalTax');
+          if(Number(resp2)){
+            tax += Math.ceil(req.body.content.amount) - req.body.content.amount;
+          }
+          if(Number(resp3)){
+            tax += (req.body.content.amount * Number(resp3)/100);
+          }
+          console.log('Tax: ' + tax);
+          if(tax){
+            starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + tax);
+          }
+        });
+      });
+    }
 
+  }
 });
 }
 module.exports = { start };
