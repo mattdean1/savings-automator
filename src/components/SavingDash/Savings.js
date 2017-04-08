@@ -17,7 +17,6 @@ import {
   Menu,
   Modal,
   Input,
-
   Progress,
   Checkbox
 } from 'semantic-ui-react'
@@ -80,7 +79,10 @@ class Dashboard extends React.Component {
         estimated_end_date : '',
         estimated_days : 0
       },
-      goalCount : 0
+      goalCount : 0,
+      IN_Income_Savings : 0,
+      OUT_RoundUp : false,
+      OUT_PersonalTax: 0
     })
 
     this.handleItemClick = this.handleItemClick.bind(this)
@@ -98,7 +100,7 @@ class Dashboard extends React.Component {
     const { firstName } = customer
     const name = customer && firstName ? firstName + "'s Account" : 'Your Account'
 
-    console.log('test')
+    console.log(this.state)
     if (this.state.activeItem === 'plan') {
       return (
         <Grid.Column>
@@ -160,22 +162,34 @@ class Dashboard extends React.Component {
 
       <div className='ui cards'>
         <div style={{ width: '100%' }} className='card'>
+          <Label attached='top'>How to set your rules</Label>
+          <div className='content'>
+            <div className='header'>
+              Getting Started
+              <div style={{ fontSize: 12 }} className='meta'>Assign rules to make the most of your outcome and income. All self 'taxes' will be sent to your savings account.</div>
+            </div>
+          </div>
+        </div>
+        <div style={{ width: '100%' }} className='card'>
           <Label attached='top'>Incoming</Label>
           <div className='content'>
             <div className='header'>
               <div className='checkbox'>
-              Placeholder
-              <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
+              Income Savings
+                <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
               </div>
+              <span style={{ fontSize: 12 }} className='meta'>Take a % of your income and put it into your savings. Automatically!</span>
             </div>
           </div>
           <div className='extra content'>
             <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}><strong /></h4>
             <div style={{ float:'left' }}>
               <Input
+                onChange={(e, data) => { console.log(data); this.setState({ 'IN_Income_Savings' : data.value }) }}
                 label={{ basic: true, content: '%' }}
                 labelPosition='right'
                 placeholder='Enter Percentage'
+                value={this.state.IN_Income_Savings}
               />
             </div>
           </div>
@@ -187,20 +201,35 @@ class Dashboard extends React.Component {
             <div className='header'>
               <div className='checkbox'>
               Personal Tax
-              <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
+                <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
               </div>
+              <span style={{ fontSize: 12 }} className='meta'>For all non-essential purchases, tax yourself to incentivise spending less</span>
+
             </div>
           </div>
           <div className='extra content'>
-            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>%</strong></h4>
-            <div style={{ float:'right' }} className='ui icon buttons' />
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}><strong /></h4>
+            <div style={{ float:'left' }}>
+              <Input
+                onChange={(e, data) => { console.log(data); this.setState({ 'OUT_PersonalTax' : data.value }) }}
+                label={{ basic: true, content: '%' }}
+                labelPosition='right'
+                placeholder='Enter Percentage'
+                value={this.state.OUT_PersonalTax}
+              />
+            </div>
           </div>
           <div className='content'>
             <div className='header'>
               <div className='checkbox'>
             Round-Up Change
-            <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
+                <Checkbox
+                  onChange={(e, data) => { this.setState({ 'OUT_RoundUp' : data.checked }) }}
+                  toggle name='example' style={{ float:'right', cursor: 'pointer' }}
+                  value={this.state.OUT_RoundUp}
+                />
               </div>
+              <span style={{ fontSize: 12 }} className='meta'>Each time you make a purchase the cost will be rounded to the pound and the excess saved!</span>
             </div>
           </div>
         </div>
