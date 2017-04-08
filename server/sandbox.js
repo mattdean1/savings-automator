@@ -10,7 +10,7 @@ const debug = require('debug')('app:sandbox');
 const EXPIRY_THRESHOLD = 15 * 60 * 1000;
 
 const pullTokensFromConfig = (db) => {
-  persistence.setSandboxTokens(db, {access_token: config.sandboxAccessToken, refresh_token: config.refreshToken, token_type: 'Bearer', expires_in: 0});
+  persistence.setSandboxTokens(db, {access_token: process.env.sandboxAccessToken || config.sandboxAccessToken, refresh_token: process.env.refreshToken || config.refreshToken, token_type: 'Bearer', expires_in: 0});
 };
 
 const client = redis.createClient({
@@ -23,7 +23,7 @@ const initialiseSandboxTokenStore = (db) => {
   debug('initialiseSandboxTokenStore :: Existing token store', tokenStore);
   const access_token = tokenStore ? tokenStore['access_token'] : null;
   if (!access_token) {
-    debug('initialiseSandboxTokenStore :: creating token store with tokens from app configuration', config.sandboxAccessToken, config.refreshToken);
+    debug('initialiseSandboxTokenStore :: creating token store with tokens from app configuration', process.env.sandboxAccessToken || config.sandboxAccessToken, process.env.refreshToken || config.refreshToken);
     pullTokensFromConfig(db);
   }
 
