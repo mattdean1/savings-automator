@@ -80,6 +80,7 @@ class Dashboard extends React.Component {
   getNewTransaction() {
     $.get('/api/sandbox/transactions', function(res) {
       console.log('Updated Transactions');
+      console.log(res.length);
       this.setState({transactions: res});
     });
   }
