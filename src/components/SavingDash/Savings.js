@@ -18,6 +18,26 @@ import { Link } from 'react-router'
 import { amountDisplay } from '../../commons/utils'
 import './Savings.scss'
 
+const goals = [{
+  title : 'Macbook Pro',
+  goal : 1500,
+  raised : 346.54,
+  percentage : 50,
+  category: 'Technology',
+  start_date : '08/03/17',
+  estimated_end_date : '08/05/17',
+  estimated_days : 44
+}, {
+  title : 'Holiday to Malta',
+  goal : 800,
+  raised : 12.54,
+  percentage : 50,
+  category: 'Holiday',
+  start_date : '06/02/17',
+  estimated_end_date : '08/12/17',
+  estimated_days : 76
+}]
+
 class Dashboard extends React.Component {
 
   static propTypes = {
@@ -33,9 +53,9 @@ class Dashboard extends React.Component {
     const { firstName } = customer
     const name = customer && firstName ? firstName + "'s Account" : 'Your Account'
 
-    return <Container style={{ maxWidth: '970px' }}>
-      {plans({})}
-    </Container>
+    return <Grid.Column><Container style={{ maxWidth: '970px' }}>
+      {plans({ goals })}
+    </Container></Grid.Column>
   }
 }
 
@@ -85,48 +105,37 @@ const Balance = (props) => {
 }
 
 const plans = ({ goals }) => {
+  const newArray = goals.map((goal) => {
+    return (
+      <div key={goal.title} className='ui cards'>
+        <div style={{ width: '100%' }} className='card'>
+          <div className='content'>
+            <div className='header'>
+              {goal.title}
+            </div>
+            <div className='meta'>
+              £{goal.raised} out of £{goal.goal}
+            </div>
+            <div className='description'>
+              Estimated Saving Days: <strong>{goal.estimated_days}</strong>
+            </div>
+          </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
+            {/* <div className='ui icon buttons'>
+              <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
+              <div className='increment ui basic green button icon'><i className='plus icon' /></div>
+            </div> */}
+          </div>
+          <div className='ui bottom attached progress'>
+            <div className='indicating bar' />
+          </div>
+        </div>
+      </div>
+    )
+  })
   return (
-    <div className='ui cards'>
-      <div className='card'>
-        <div className='content'>
-          <div className='header'>
-            Macbook Pro 2015
-          </div>
-          <div className='meta'>
-            £362 out of £1,500
-          </div>
-          <div className='description'>
-            Estimated Saving Days: <strong>44</strong>
-          </div>
-        </div>
-        <div className='extra content'>
-          <h4>Savings Allocation</h4>
-          {/* <div className='ui two buttons'>
-            <div className='ui basic green button'>Approve</div>
-            <div className='ui basic red button'>Decline</div>
-          </div> */}
-        </div>
-      </div>
-      <div className='card'>
-        <div className='content'>
-          <div className='header'>
-            Jenny Hess
-          </div>
-          <div className='meta'>
-            New Member
-          </div>
-          <div className='description'>
-            Jenny wants to add you to the group <b>best friends</b>
-          </div>
-        </div>
-        <div className='extra content'>
-          <div className='ui two buttons'>
-            <div className='ui basic green button'>Approve</div>
-            <div className='ui basic red button'>Decline</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div>{ newArray }</div>
   )
 }
 
