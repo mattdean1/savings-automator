@@ -21,27 +21,27 @@ class AppContainer extends Component {
     return false
   }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.startPolling();
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
       if (this._timer) {
         clearInterval(this._timer);
         this._timer = null;
       }
-  },
+  }
 
-  startPolling: function() {
+  startPolling() {
       var self = this;
       setTimeout(function() {
         if (!self.isMounted()) { return; } // abandon
         self.poll(); // do it once and then start it up ...
         self._timer = setInterval(self.poll.bind(self), 15000);
       }, 1000);
-  },
+  }
 
-  poll: function() {
+  poll() {
       var self = this;
       $.get('/api/sandbox/ping', function(result) {
         if (self.isMounted()) {
