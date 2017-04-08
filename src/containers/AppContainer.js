@@ -11,46 +11,8 @@ class AppContainer extends Component {
     store  : PropTypes.object.isRequired
   };
 
-
-  constructor(props) {
-    super(props);
-    this.startPolling = this.startPolling.bind(this);
-    this.poll = this.poll.bind(this);
-  }
-
   shouldComponentUpdate () {
     return false
-  }
-
-  componentDidMount() {
-    this.startPolling();
-  }
-
-  componentWillUnmount() {
-      if (this._timer) {
-        clearInterval(this._timer);
-        this._timer = null;
-      }
-  }
-
-  startPolling() {
-      var self = this;
-      setTimeout(function() {
-        self.poll(); // do it once and then start it up ...
-        self._timer = setInterval(self.poll.bind(self), 5000);
-      }, 1000);
-  }
-
-  poll() {
-      var self = this;
-      $.get('/api/sandbox/ping', function(result) {
-          injectReducer(self.props.store, {key: 'update', result})
-          console.log('Success');
-          console.log(result);
-      }).fail(function(response) {
-        console.log('Fail');
-        console.log(response);
-      });
   }
 
   render () {
@@ -59,7 +21,7 @@ class AppContainer extends Component {
     return (
       <Provider store={store}>
         <div style={{ height: '100%' }}>
-          <Router history={browserHistory} children={routes} />
+          <Router history={browserHistory} children={routes} store={this.props.store}/>
         </div>
       </Provider>
     )

@@ -66,7 +66,7 @@ const updateRedis = (payload) => {
   client.get('hardcoded', (err, resp) => {
     const data = JSON.parse(resp || '[]');
     data.push(payload.content);
-    client.setex(request, 60*60*24, JSON.stringify(data));
+    client.setex('hardcoded', 60*60*24, JSON.stringify(data));
   });
 }
 const start = (app) => {
@@ -104,6 +104,18 @@ const start = (app) => {
   app.get('/api/sandbox/ping', (req, res) => {
       client.get('hardcoded', (err, resp) => {
         res.send(JSON.parse(resp ||'[]'));
+      });
+  });
+  app.get('/getCategory', (req, res) => {
+      client.get('category', (err, resp) => {
+        res.send(JSON.parse(resp ||'[]'));
+      });
+  });
+  app.get('/createCategory/:category', (req, res) => {
+      client.get('category', (err, resp) => {
+        var currentCategory = JSON.parse(resp ||'[]');
+        currentCategory.push(req.params.category);
+        client.setex('category', 60*60*24, JSON.stringify(currentCategory));
       });
   });
 };

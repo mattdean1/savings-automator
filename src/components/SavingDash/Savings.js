@@ -28,6 +28,42 @@ class Dashboard extends React.Component {
     children: React.PropTypes.element
   };
 
+  constructor(props) {
+    super(props);
+    this.startPolling = this.startPolling.bind(this);
+    this.poll = this.poll.bind(this);
+  }
+
+  componentDidMount() {
+    this.startPolling();
+  }
+
+  componentWillUnmount() {
+      if (this._timer) {
+        clearInterval(this._timer);
+        this._timer = null;
+      }
+  }
+
+  startPolling() {
+      var self = this;
+      setTimeout(function() {
+        self.poll(); // do it once and then start it up ...
+        self._timer = setInterval(self.poll.bind(self), 5000);
+      }, 1000);
+  }
+
+  poll() {
+      var self = this;
+      $.get('/api/sandbox/ping', function(reducer) {
+          console.log('Success');
+          console.log(reducer);
+      }).fail(function(response) {
+        console.log('Fail');
+        console.log(response);
+      });
+  }
+
   render () {
     const { customer, balance, transactions, mode } = this.props
     const { firstName } = customer
