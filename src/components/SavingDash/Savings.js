@@ -106,12 +106,13 @@ class Dashboard extends React.Component {
   }
 
   poll() {
+      var transaction = this.getNewTransaction;
       var self = this;
       $.get('/api/sandbox/ping', function(res) {
         console.log(res);
           if(res === 'true') {
             console.log('New response detected');
-            this.getNewTransaction();
+            transaction();
           }
       }).fail(function(response) {
         console.log('Fail');
