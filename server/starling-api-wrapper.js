@@ -30,7 +30,9 @@ return client.getTransaction(accessToken, transactionid);
 }
 const payment = (client, accessToken, amount ) =>{
   console.log(accessToken + ' ' + amount);
-return client.makeLocalPayment(accessToken, 'bb24f971-05c6-4310-ae3f-fb41b6c51a15', amount, 'SAVING');
+return client.makeLocalPayment(accessToken, 'bb24f971-05c6-4310-ae3f-fb41b6c51a15', 'SAVING', amount)
+.then((res) => {console.log(res)})
+.catch((err) => {console.log(err)});
 }
 /**
  * A middleware to check for the presence of the access token in the
