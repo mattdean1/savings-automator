@@ -7,3 +7,6 @@ dist
 coverage
 
 .idea/
+
+
+server/config.json
