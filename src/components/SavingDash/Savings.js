@@ -1,4 +1,5 @@
 import React from 'react'
+import update from 'immutability-helper'
 import $ from 'jquery'
 import {
   Grid,
@@ -30,7 +31,7 @@ const styles = {
   }
 }
 
-const goals = [{
+const sampleGoals = [{
   title : 'Macbook Pro',
   goal : 1500,
   raised : 346.54,
@@ -65,7 +66,7 @@ class Dashboard extends React.Component {
     this.state = ({
       activeItem: 'goals',
       modal: false,
-      goals,
+      goals : sampleGoals,
       newGoal : {
         title: '',
         goal: '',
@@ -258,10 +259,9 @@ class Dashboard extends React.Component {
     newGoal.start_date = new Date()
     newGoal.key2 = '' + (+new Date())
 
-    this.setState((state) => {
-      state.goals = state.goals.concat([newGoal])
-      return state
-    })
+    let goalsArray = update(this.state.goals, { $push: [newGoal] })
+
+    this.setState({ goals: goalsArray })
     // this.setState({ goals: goalsArray, modal: false, goalCount: this.state.goalCount++ })
   }
 
