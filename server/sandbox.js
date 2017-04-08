@@ -1,5 +1,6 @@
 const  _ = require('lodash');
 const moment = require('moment');
+const redis = require('redis');
 const config = require('./config');
 const Starling = require('starling-developer-sdk');
 const starlingApiWrapper = require('./starling-api-wrapper');
@@ -11,6 +12,10 @@ const EXPIRY_THRESHOLD = 15 * 60 * 1000;
 const pullTokensFromConfig = (db) => {
   persistence.setSandboxTokens(db, {access_token: config.sandboxAccessToken, refresh_token: config.refreshToken, token_type: 'Bearer', expires_in: 0});
 };
+
+const client = redis.createClient({
+  url: process.env.REDIS_URL,
+});
 
 const initialiseSandboxTokenStore = (db) => {
   // Check DB
@@ -57,6 +62,13 @@ const refresh = (db) => {
     });
 };
 
+const updateRedis = (payload) => {
+  client.get('hardcoded', (err, resp) => {
+    const data = JSON.parse(resp || '[]');
+    data.push(payload.content);
+    client.setex(request, 60*60*24, JSON.stringify(data));
+  });
+}
 const start = (app) => {
   debug('Starting sandbox app...');
 
@@ -87,6 +99,12 @@ const start = (app) => {
   app.post('/api/sandbox/webhook', (req, res) => {
     console.log('Something received');
     console.log(req.body);
+    updateRedis(req.body);
+  });
+  app.get('/api/sandbox/ping', (req, res) => {
+      client.get('hardcoded', (err, resp) => {
+        res.send(JSON.parse(resp ||'[]'));
+      });
   });
 };
 
