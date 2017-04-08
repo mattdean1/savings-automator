@@ -28,14 +28,6 @@ import { amountDisplay } from '../../commons/utils'
 import './Savings.scss'
 import 'react-rangeslider/lib/index.css'
 
-const styles = {
-  menu : {
-    marginTop: -52,
-    width: '100%',
-    borderRadius: 0
-  }
-}
-
 const sampleGoals = [
 {
   title : 'Macbook Pro',
@@ -352,9 +344,10 @@ class Dashboard extends React.Component {
     // this.setState({ goals: goalsArray, modal: false, goalCount: this.state.goalCount++ })
   }
 
+
   menu () {
     return (
-      <Menu style={styles.menu} fluid widths={3}>
+      <Menu id='pillsmenu' fluid widths={3}>
         <Menu.Item
           name='goals'
           active={this.state.activeItem === 'goals'}
