@@ -12,7 +12,7 @@
   "sandboxLocalTokenStore": "../starling-api-web-starter-kit-sandbox-token-store.json",
   "sandboxApi": "https://api-sandbox.starlingbank.com/",
   "sandboxAccessToken": "UPnkBp0GZ79y4N3TyobzRokKf1YNjh1UCzzW7P0osC8LaYCUJlGYMDCXr6chKV8B",
-  "refreshToken": "1NSZXy30r60klvCztX1k69nkUFVy2qk9MFf2ltlGPuxlocCi1jbNtdPCo008lpPx",
+  "refreshToken": "AlvCwM6eZ8h0Bdzn1lo1jeDrYlhblPwJvT1qpwcnVRzamkY6CNFU5dlB63c2K2eE",
 
   "oauthApi": "https://oauth.starlingbank.com",
   "oauthRedirectUri": "http://localhost:3000/callback"
