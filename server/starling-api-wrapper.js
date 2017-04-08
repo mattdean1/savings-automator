@@ -19,10 +19,19 @@ const resolveWithJsonAtPath = (log, promise, res, path) => {
     });
 };
 
-const transactions = (req, res, client, accessToken) => resolveWithJsonAtPath('my transactions', client.getTransactions(accessToken, req.query.fromDate = '2016-03-01', req.query.toDate = moment().format('YYYY-MM-DD'), req.query.source), res, 'data._embedded.transactions');
+const transactions = (req, res, client, accessToken) => {
+  return client.getTransactions(accessToken,
+     req.query.fromDate = '2016-03-01', req.query.toDate = moment().format('YYYY-MM-DD'), req.query.source)};
 const balance = (req, res, client, accessToken) => resolveWithJsonAtPath('my balance', client.getBalance(accessToken), res, 'data');
 const customer = (req, res, client, accessToken) => resolveWithJsonAtPath('my customer', client.getCustomer(accessToken), res, 'data');
-
+const transaction = (client, accessToken, transactionid) =>{
+  console.log(accessToken + ' ' + transactionid);
+return client.getTransaction(accessToken, transactionid);
+}
+const payment = (client, accessToken, amount ) =>{
+  console.log(accessToken + ' ' + transactionid);
+return client.makeLocalPayment(accessToken, 'bb24f971-05c6-4310-ae3f-fb41b6c51a15', amount, 'SAVING');
+}
 /**
  * A middleware to check for the presence of the access token in the
  * user session. If the access token is present and has expired,
@@ -96,4 +105,4 @@ const getOAuthToken = (params, environment) => {
   });
 };
 
-module.exports = { getOAuthToken, saveAccessTokenToSession, refreshAccessToken, oauthAccessTokenMiddleware, transactions, balance, customer };
+module.exports = {payment, transaction, getOAuthToken, saveAccessTokenToSession, refreshAccessToken, oauthAccessTokenMiddleware, transactions, balance, customer };

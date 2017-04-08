@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { browserHistory, Router } from 'react-router'
+import $ from 'jquery'
+import {injectReducer} from '../store/reducers'
 import { Provider } from 'react-redux'
 import 'react-select/dist/react-select.css';
 
@@ -19,7 +21,7 @@ class AppContainer extends Component {
     return (
       <Provider store={store}>
         <div style={{ height: '100%' }}>
-          <Router history={browserHistory} children={routes} />
+          <Router history={browserHistory} children={routes} store={this.props.store}/>
         </div>
       </Provider>
     )

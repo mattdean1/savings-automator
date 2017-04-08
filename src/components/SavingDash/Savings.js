@@ -1,4 +1,5 @@
 import React from 'react'
+
 import update from 'immutability-helper'
 import $ from 'jquery'
 import {
@@ -68,6 +69,7 @@ class Dashboard extends React.Component {
     this.state = ({
       activeItem: 'goals',
       modal: false,
+      transactions: [],
       goals : sampleGoals,
       newGoal : {
         title: '',
@@ -87,6 +89,52 @@ class Dashboard extends React.Component {
 
     this.handleItemClick = this.handleItemClick.bind(this)
     this.menu = this.menu.bind(this)
+    this.startPolling = this.startPolling.bind(this);
+    this.poll = this.poll.bind(this);
+    this.getNewTransaction = this.getNewTransaction.bind(this);
+  }
+
+  getNewTransaction() {
+    $.get('/api/sandbox/transactions', function(res) {
+      console.log('Updated Transactions');
+      console.log(res.length);
+      this.setState({transactions: res});
+    });
+  }
+
+  componentDidMount() {
+    this.getNewTransaction();
+    this.startPolling();
+  }
+
+  componentWillUnmount() {
+      if (this._timer) {
+        clearInterval(this._timer);
+        this._timer = null;
+      }
+  }
+
+  startPolling() {
+      var self = this;
+      setTimeout(function() {
+        self.poll(); // do it once and then start it up ...
+        self._timer = setInterval(self.poll.bind(self), 5000);
+      }, 1000);
+  }
+
+  poll() {
+      var transaction = this.getNewTransaction;
+      var self = this;
+      $.get('/api/sandbox/ping', function(res) {
+        console.log(res);
+          if(res === 'true') {
+            console.log('New response detected');
+            transaction();
+          }
+      }).fail(function(response) {
+        console.log('Fail');
+        console.log(response);
+      });
     this.createGoal = this.createGoal.bind(this)
   }
 
