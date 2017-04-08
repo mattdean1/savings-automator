@@ -124,16 +124,17 @@ const start = (app) => {
     starlingApiWrapper.transactions(req, res, starlingClient, getAccessToken(db)).
     then(function(resp){
           client.setex('hardcoded', 60*60*24, 'false');
-      console.log('Received');
-      console.log(resp);
+      console.log('Received webhook');
       var list = _.get(resp, 'data._embedded.transactions', []);
       var promises = [];
       for(var i = 0; i < list.length; i+= 1){
-        console.log('id');
-        console.log(list[i]['id']);
         promises.push(  starlingApiWrapper.transaction(starlingClient, getAccessToken(db), list[i]['id']));
       }
       Promise.all(promises).then(function(res){
+             console.log('Updated via webhook');
+             for(var i = 0; i < res.length; i += 1){
+               res[i] = _.get( res[i], 'data', [])
+             }
             client.setex('getAll', 60*60*24, JSON.stringify(res));
             client.setex('hardcoded', 60*60*24, 'true');
       });
