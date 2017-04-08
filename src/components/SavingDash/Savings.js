@@ -19,6 +19,14 @@ import { Link } from 'react-router'
 import { amountDisplay } from '../../commons/utils'
 import './Savings.scss'
 
+const styles = {
+  menu : {
+    marginTop: -52,
+    width: '100%',
+    borderRadius: 0,
+  }
+};
+
 class Dashboard extends React.Component {
 
   static propTypes = {
@@ -34,7 +42,7 @@ class Dashboard extends React.Component {
     this.state = ({activeItem: 'goals'});
 
     this.handleItemClick = this.handleItemClick.bind(this);
-    this.goals = this.goals.bind(this);
+    this.menu = this.menu.bind(this);
   }
 
    handleItemClick (e, { name }) {
@@ -47,14 +55,18 @@ class Dashboard extends React.Component {
     const { firstName } = customer
     const name = customer && firstName ? firstName + "'s Account" : 'Your Account'
 
-    return <Container style={{ maxWidth: '970px' }}>
-      {this.goals({})}
-    </Container>
+    return (
+      <Grid.Column>
+        {this.menu()}
+        <Container style={{ maxWidth: '970px' }}>
+        </Container>
+      </Grid.Column>
+    )
   }
 
-  goals ({ goals }) {
+  menu () {
     return(
-      <Menu>
+      <Menu style={styles.menu} fluid widths={3}>
           <Menu.Item
             name='editorials'
             active={this.state.activeItem === 'editorials'}
