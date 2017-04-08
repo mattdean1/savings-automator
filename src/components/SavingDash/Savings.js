@@ -66,22 +66,26 @@ class Dashboard extends React.Component {
     this.state = ({
       activeItem: 'goals',
       modal: false,
-      goals
+      goals,
+      transactions: [],
     })
 
     this.handleItemClick = this.handleItemClick.bind(this)
     this.menu = this.menu.bind(this)
     this.startPolling = this.startPolling.bind(this);
     this.poll = this.poll.bind(this);
+    this.getNewTransaction = this.getNewTransaction.bind(this);
   }
 
   getNewTransaction() {
     $.get('/api/sandbox/transactions', function(res) {
-      console.log(res);
+      console.log('Updated Transactions');
+      this.setState({transactions: res});
     });
   }
 
   componentDidMount() {
+    this.getNewTransaction();
     this.startPolling();
   }
 
@@ -103,7 +107,6 @@ class Dashboard extends React.Component {
   poll() {
       var self = this;
       $.get('/api/sandbox/ping', function(res) {
-          console.log('Success');
           if(res === 'true') {
             console.log('New response detected');
             this.getNewTransaction();

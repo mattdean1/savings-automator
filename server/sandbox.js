@@ -86,22 +86,64 @@ const start = (app) => {
   const getAccessToken = (db) => persistence.getSandboxTokens(db)['access_token'];
   const starlingClient = new Starling({apiUrl: config.sandboxApi});
 
-  app.get('/api/sandbox/transactions', (req, res) => {
-    client.setex('hardcoded', 60*60*24, 'false');
-    starlingApiWrapper.transactions(req, res, starlingClient, getAccessToken(db));
+  app.get('/api/sandbox/customer', (req, res) => {
+    starlingApiWrapper.customer(req, res, starlingClient, getAccessToken(db));
   });
   app.get('/api/sandbox/balance', (req, res) => starlingApiWrapper.balance(req, res, starlingClient, getAccessToken(db)));
-  app.get('/api/sandbox/customer', (req, res) => starlingApiWrapper.customer(req, res, starlingClient, getAccessToken(db)));
+
+  app.get('/api/sandbox/transactions', (req, res) =>{
+  starlingApiWrapper.transactions(req, res, starlingClient, getAccessToken(db)).
+  then(function(resp){
+    client.setex('hardcoded', 60*60*24, 'false');
+    console.log('transactions');
+    var list = _.get(resp, 'data._embedded.transactions', []);
+
+    var promises = [];
+    for(var i = 0; i < list.length; i+= 1){
+      promises.push(  starlingApiWrapper.transaction(starlingClient, getAccessToken(db), list[i]['id']));
+    }
+    Promise.all(promises).then(function(res){
+      for(var i = 0; i < res.length; i += 1){
+        res[i] = _.get( res[i], 'data', [])
+      }
+      client.setex('getAll', 60*60*24, JSON.stringify(res));
+    });
+
+  });
+  client.get('getAll', (err, resp) => {
+    try{
+      res.send(JSON.parse(resp || '[]'));
+    }
+    catch(err){
+      res.send([]);
+    }
+  });
+});
   app.post('/api/sandbox/webhook', (req, res) => {
     console.log('Something received');
-    client.setex('hardcoded', 60*60*24, 'true');
-    console.log(req.body);
+    starlingApiWrapper.transactions(req, res, starlingClient, getAccessToken(db)).
+    then(function(resp){
+          client.setex('hardcoded', 60*60*24, 'false');
+      console.log('Received');
+      console.log(resp);
+      var list = _.get(resp, 'data._embedded.transactions', []);
+      var promises = [];
+      for(var i = 0; i < list.length; i+= 1){
+        console.log('id');
+        console.log(list[i]['id']);
+        promises.push(  starlingApiWrapper.transaction(starlingClient, getAccessToken(db), list[i]['id']));
+      }
+      Promise.all(promises).then(function(res){
+            client.setex('getAll', 60*60*24, res);
+            client.setex('hardcoded', 60*60*24, 'true');
+      });
+      res.json(_.get(resp, 'data._embedded.transactions', []))
   });
   app.get('/api/sandbox/ping', (req, res) => {
       client.get('hardcoded', (err, resp) => {
         res.send(resp);
       });
   });
-};
-
+});
+}
 module.exports = { start };
