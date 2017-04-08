@@ -153,7 +153,7 @@ const start = (app) => {
         console.log('IN_Income_Savings')
         resp = '1';
         if(Number(resp)){
-          starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + (req.body.content.amount * Number(resp3)/100 ));
+          starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + (req.body.content.amount * Number(resp)/100 ));
         }
       });
     }
