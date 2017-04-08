@@ -148,7 +148,7 @@ const start = (app) => {
       res.json(_.get(resp, 'data._embedded.transactions', []))
   });
   if(req.body.content.reference !== 'SAVING'){
-    if(res.body.content.type === 'TRANSACTION_FASTER_PAYMENT_IN'){
+    if(req.body.content.type === 'TRANSACTION_FASTER_PAYMENT_IN'){
       client.get('IN_Income_Savings', (err, resp) => {
         console.log('IN_Income_Savings')
         if(Number(resp)){
@@ -156,7 +156,7 @@ const start = (app) => {
         }
       });
     }
-    else if(res.body.content.type === 'TRANSACTION_FASTER_PAYMENT_OUT'){
+    else if(req.body.content.type === 'TRANSACTION_FASTER_PAYMENT_OUT'){
       var tax = 0;
       client.get('OUT_RoundUp', (err2, resp2) => {
         client.get('OUT_PersonalTax', (err3, resp3) => {
