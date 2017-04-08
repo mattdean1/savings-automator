@@ -11,7 +11,8 @@ import {
   Card,
   Loader,
   List,
-  Button
+  Button,
+  Menu
 } from 'semantic-ui-react'
 import SelectorDropdown from '../../components/SelectorDropdown/SelectorDropdown'
 import { Link } from 'react-router'
@@ -28,14 +29,57 @@ class Dashboard extends React.Component {
     children: React.PropTypes.element
   };
 
+  constructor(props) {
+    super(props);
+    this.state = ({activeItem: 'goals'});
+
+    this.handleItemClick = this.handleItemClick.bind(this);
+    this.goals = this.goals.bind(this);
+  }
+
+   handleItemClick (e, { name }) {
+     console.log('active item:' + name);
+     this.setState({ activeItem: name });
+   }
+
   render () {
     const { customer, balance, transactions, mode } = this.props
     const { firstName } = customer
     const name = customer && firstName ? firstName + "'s Account" : 'Your Account'
 
     return <Container style={{ maxWidth: '970px' }}>
-      {plans({})}
+      {this.goals({})}
     </Container>
+  }
+
+  goals ({ goals }) {
+    return(
+      <Menu>
+          <Menu.Item
+            name='editorials'
+            active={this.state.activeItem === 'editorials'}
+            onClick={this.handleItemClick}
+          >
+            Editorials
+          </Menu.Item>
+
+          <Menu.Item
+            name='reviews'
+            active={this.state.activeItem === 'reviews'}
+            onClick={this.handleItemClick}
+          >
+            Reviews
+          </Menu.Item>
+
+          <Menu.Item
+            name='upcomingEvents'
+            active={this.state.activeItem === 'upcomingEvents'}
+            onClick={this.handleItemClick}
+          >
+            Upcoming Events
+          </Menu.Item>
+        </Menu>
+    )
   }
 }
 
@@ -129,6 +173,8 @@ const plans = ({ goals }) => {
     </div>
   )
 }
+
+
 
 // While the API is different in demo and prod
 const OldBalance = ({ balance }) => {
