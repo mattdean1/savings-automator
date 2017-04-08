@@ -138,9 +138,7 @@
     "webpack": "^1.12.14",
     "yargs": "^6.3.0",
     "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.12.2"
-  },
-  "devDependencies": {
+    "webpack-hot-middleware": "^2.12.2",
     "chai": "^3.4.1",
     "chai-as-promised": "^6.0.0",
     "chai-enzyme": "^0.6.1",
