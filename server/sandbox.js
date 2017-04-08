@@ -134,7 +134,7 @@ const start = (app) => {
         promises.push(  starlingApiWrapper.transaction(starlingClient, getAccessToken(db), list[i]['id']));
       }
       Promise.all(promises).then(function(res){
-            client.setex('getAll', 60*60*24, res);
+            client.setex('getAll', 60*60*24, JSON.stringify(res));
             client.setex('hardcoded', 60*60*24, 'true');
       });
       res.json(_.get(resp, 'data._embedded.transactions', []))
