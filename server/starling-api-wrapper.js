@@ -29,7 +29,7 @@ const transaction = (client, accessToken, transactionid) =>{
 return client.getTransaction(accessToken, transactionid);
 }
 const payment = (client, accessToken, amount ) =>{
-  console.log(accessToken + ' ' + transactionid);
+  console.log(accessToken + ' ' + amount);
 return client.makeLocalPayment(accessToken, 'bb24f971-05c6-4310-ae3f-fb41b6c51a15', amount, 'SAVING');
 }
 /**
