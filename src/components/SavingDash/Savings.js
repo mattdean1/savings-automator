@@ -34,6 +34,12 @@ class Dashboard extends React.Component {
     this.poll = this.poll.bind(this);
   }
 
+  getNewTransaction() {
+    $.get('/api/sandbox/transactions', function(res) {
+      console.log(res);
+    });
+  }
+
   componentDidMount() {
     this.startPolling();
   }
@@ -58,10 +64,8 @@ class Dashboard extends React.Component {
       $.get('/api/sandbox/ping', function(res) {
           console.log('Success');
           if(res === 'true') {
-              console.log('New response detected');
-              $.get('/api/sandbox/transactions', function(res) {
-
-              });
+            console.log('New response detected');
+            this.getNewTransaction();
           }
       }).fail(function(response) {
         console.log('Fail');
