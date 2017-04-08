@@ -147,7 +147,7 @@ const start = (app) => {
       });
       res.json(_.get(resp, 'data._embedded.transactions', []))
   });
-  if(req.body.content.reference !== SAVING){
+  if(req.body.content.reference !== 'SAVING'){
     if(res.body.content.type === 'TRANSACTION_FASTER_PAYMENT_IN'){
       client.get('IN_Income_Savings', (err, resp) => {
         console.log('IN_Income_Savings')
