@@ -32,7 +32,7 @@ class SandboxView extends React.Component {
     const error = urlParams.get('error')
     const { loading, transactions, balance, customer } = this.props.sandbox
     return (
-      <Grid>
+      <Grid style={{margin: 0}}>
         {loading ? <Loading />
           : (transactions && balance && customer
             ? <Dashboard mode={'Sandbox'} customer={customer} transactions={transactions} balance={balance}>

@@ -165,7 +165,7 @@ class Dashboard extends React.Component {
 
     if (this.state.activeItem === 'plan') {
       return (
-        <Grid.Column>
+        <Grid.Column style={{padding: 0}}>
           {this.menu()}
           <Container style={{ maxWidth: '970px' }}>
             {this.plansView(this.state.goals)}
@@ -174,7 +174,7 @@ class Dashboard extends React.Component {
       )
     } else if (this.state.activeItem === 'rules') {
       return (
-        <Grid.Column>
+        <Grid.Column style={{padding: 0}}>
           {this.menu()}
           <Container style={{ maxWidth: '970px' }}>
             {this.rulesView(this.state.goals)}
@@ -183,7 +183,7 @@ class Dashboard extends React.Component {
       )
     } else {
       return (
-        <Grid.Column>
+        <Grid.Column style={{padding: 0}}>
           {this.menu()}
           <Container style={{ maxWidth: '970px' }}>
             {this.goalsView(this.state.goals)}
@@ -455,102 +455,6 @@ class Dashboard extends React.Component {
             Rules
           </Menu.Item>
       </Menu>
-    )
-  }
-}
-
-const Balance = (props) => {
-  const { balance } = props
-  if (balance) {
-    if (balance.effectiveBalance === undefined) {
-      return <OldBalance balance={balance} />
-    }
-
-    const effectiveBalance = balance.effectiveBalance ? amountDisplay(balance.effectiveBalance, balance.currency) : null
-    const clearedBalance = balance.effectiveBalance ? amountDisplay(balance.clearedBalance, balance.currency) : null
-    const pendingTransactions = balance.pendingTransactions
-    return (
-      <div>
-        <Statistic size='tiny' style={{ textAlign: 'center', marginTop: '-40px' }} color='blue'>
-          <Icon name='diamond' size='huge' style={{ textAlign: 'center', margin: '10px auto' }} />
-          <Statistic.Value>{effectiveBalance}</Statistic.Value>
-          <Statistic.Label>Effective Balance</Statistic.Label>
-        </Statistic>
-        <Grid columns={2}>
-          <Grid.Column>
-            <Statistic size='mini' style={{ textAlign: 'center' }} color='blue'>
-              <Statistic.Value>{clearedBalance}</Statistic.Value>
-              <Statistic.Label>Settled Balance</Statistic.Label>
-            </Statistic>
-          </Grid.Column>
-          <Grid.Column>
-            <Statistic size='mini' style={{ textAlign: 'center' }} color='blue'>
-              <Statistic.Value>{pendingTransactions}</Statistic.Value>
-              <Statistic.Label>Pending Txns</Statistic.Label>
-            </Statistic>
-          </Grid.Column>
-        </Grid>
-      </div>
-    )
-  } else {
-    return (
-      <div>
-        <Header as='h2' icon textAlign='center'>
-          <Icon name='warning sign' size='large' />
-          Error loading Balance API
-        </Header>
-      </div>
-    )
-  }
-}
-
-// While the API is different in demo and prod
-const OldBalance = ({ balance }) => {
-  return balance.amount ? <div>
-    <Statistic size='tiny' style={{ textAlign: 'center', marginTop: '-40px' }} color='blue'>
-      <Icon name='diamond' size='huge' style={{ textAlign: 'center', margin: '10px auto' }} />
-      <Statistic.Value>{balance.amount ? amountDisplay(balance.amount, balance.currency) : null}</Statistic.Value>
-      <Statistic.Label>Balance</Statistic.Label>
-    </Statistic>
-  </div> : null
-}
-
-const CustomerDetails = (props) => {
-  const { customer } = props
-  if (customer) {
-    const { firstName, lastName, email, phone, dateOfBirth } = customer
-    return (
-      <List animated size='large' style={{ margin: '1em 2em' }} verticalAlign='bottom'>
-        <List.Item>
-          <List.Icon name='users' />
-          <List.Content>{firstName + ' ' + lastName}</List.Content>
-        </List.Item>
-        <List.Item>
-          <List.Icon name='phone' />
-          <List.Content>{phone}</List.Content>
-        </List.Item>
-        <List.Item>
-          <List.Icon name='mail' />
-          <List.Content>
-            <a href={`mailto:${email}`}>{email}</a>
-          </List.Content>
-        </List.Item>
-        <List.Item>
-          <List.Icon name='birthday' />
-          <List.Content>
-            {dateOfBirth}
-          </List.Content>
-        </List.Item>
-      </List>
-    )
-  } else {
-    return (
-      <div>
-        <Header as='h2' icon textAlign='center'>
-          <Icon name='warning sign' size='large' />
-          Error loading Customer API
-        </Header>
-      </div>
     )
   }
 }
