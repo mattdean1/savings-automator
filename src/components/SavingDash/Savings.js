@@ -22,37 +22,44 @@ import {
   Checkbox
 } from 'semantic-ui-react'
 import SelectorDropdown from '../../components/SelectorDropdown/SelectorDropdown'
+import Slider from 'react-rangeslider'
 import { Link } from 'react-router'
 import { amountDisplay } from '../../commons/utils'
 import './Savings.scss'
+import 'react-rangeslider/lib/index.css'
 
-const styles = {
-  menu : {
-    marginTop: -52,
-    width: '100%',
-    borderRadius: 0
-  }
-}
-
-const sampleGoals = [{
+const sampleGoals = [
+{
   title : 'Macbook Pro',
   goal : 1500,
   raised : 1500,
-  percentage : 50,
+  percentage : 33,
   category: 'Technology',
   start_date : '08/03/17',
   estimated_end_date : '08/05/17',
   estimated_days : 44
-}, {
+},
+{
   title : 'Holiday to Malta',
   goal : 800,
   raised : 12.54,
-  percentage : 50,
+  percentage : 33,
   category: 'Holiday',
   start_date : '06/02/17',
   estimated_end_date : '08/12/17',
   estimated_days : 76
-}]
+},
+{
+  title : 'goal3',
+  goal : 800,
+  raised : 12.54,
+  percentage : 33,
+  category: 'Holiday',
+  start_date : '06/02/17',
+  estimated_end_date : '08/12/17',
+  estimated_days : 76
+}
+]
 
 class Dashboard extends React.Component {
 
@@ -71,20 +78,11 @@ class Dashboard extends React.Component {
       modal: false,
       transactions: [],
       goals : sampleGoals,
-      newGoal : {
-        title: '',
-        goal: '',
-        raised : 0,
-        category: '',
-        percentage: 0,
-        start_date : '',
-        estimated_end_date : '',
-        estimated_days : 0
-      },
       goalCount : 0,
       IN_Income_Savings : 0,
       OUT_RoundUp : false,
-      OUT_PersonalTax: 0
+      OUT_PersonalTax: 0,
+      slidervalue: 50,
     })
 
     this.handleItemClick = this.handleItemClick.bind(this)
@@ -195,29 +193,64 @@ class Dashboard extends React.Component {
     }
   }
 
+  handleSlider (goalindex, oldvalue, newvalue) {
+    // Get delta slide value
+    const valueChange = newvalue - oldvalue;
+
+    // divvy that out to the other slides
+    const numGoals = this.state.goals.length - 1;
+    const share = valueChange / numGoals;
+
+    //edge cases - odd number of goals?
+
+    // Update state with new goal value
+    const newGoals = this.state.goals.map((goal, index) => {
+      const goalCopy = goal;
+      if(index === goalindex){
+        goalCopy.percentage = newvalue;
+        return goalCopy;
+      } else {
+        goalCopy.percentage = goalCopy.percentage - share;
+        return goalCopy
+      }
+    })
+    this.setState({goals: newGoals});
+
+
+  }
+
   plansView (goals) {
-    const newArray = goals.map((goal) => {
+    const newArray = goals.map((goal, index) => {
       return (
-        <div key={goal.title + '' + goal.start_date} className='ui cards'>
-          <div style={{ width: '100%' }} className='card'>
-            <div className='content'>
-              <div className='header'>
-                {goal.title}
-              </div>
+        <div key={goal.title} className='ui cards'>
+        <div style={{ width: '100%' }} className='card'>
+          <div className='content'>
+            <div className='header'>
+              {goal.title}
+              <span style={{float: 'right'}}>{goal.percentage}%</span>
             </div>
-            <div className='extra content'>
-              <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
-              <div style={{ float:'right' }} className='ui icon buttons'>
-                <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
-                <div className='increment ui basic green button icon'><i className='plus icon' /></div>
+          </div>
+          <div className='extra content'>
+            <div key={goal.title + '' + goal.start_date}>
+              <div className='slider'>
+                <Slider
+                  min={0}
+                  max={100}
+                  value={goal.percentage}
+                  onChange={(newvalue) => this.handleSlider(index, goal.percentage, newvalue)}
+                />
               </div>
             </div>
           </div>
         </div>
+      </div>
       )
     })
     return (
-      <div>{ newArray }</div>
+      <div>
+        { newArray }
+      </div>
+
     )
   }
 
@@ -304,32 +337,36 @@ class Dashboard extends React.Component {
 
   goalsView (goals) {
     const newArray = goals.map((goal) => {
+      const percentRaised = (goal.raised / goal.goal) * 100
       return (
         <div key={goal.title + '' + Math.random()} className='ui cards'>
-          <div style={{ width: '100%' }} className='card'>
-            <div className='content'>
-              <div className='header'>
-                {goal.title}
-              </div>
-              <div className='meta'>
-                £{goal.raised} out of £{goal.goal}
-              </div>
-              <div className='description'>
-                Estimated Saving Days: <strong>{goal.estimated_days}</strong>
-              </div>
+        <div style={{ width: '100%' }} className='card'>
+          <div className='content'>
+            <div className='header'>
+              {goal.title}
+              {percentRaised === 100 ? <span style={{float: 'right'}}>Completed!</span> : null}
             </div>
-            <div className='extra content'>
-              <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
-              {/* <div className='ui icon buttons'>
-                <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
-                <div className='increment ui basic green button icon'><i className='plus icon' /></div>
-              </div> */}
+            <div className='meta'>
+              £{goal.raised} out of £{goal.goal}
             </div>
-            <div className='ui bottom attached progress'>
-              <div className='indicating bar' />
+            <div className='description'>
+              Estimated Days To Achievement: <strong>{goal.estimated_days}</strong>
             </div>
           </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
+            {/* <div className='ui icon buttons'>
+              <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
+              <div className='increment ui basic green button icon'><i className='plus icon' /></div>
+            </div> */}
+          </div>
+          <Progress
+            percent={percentRaised}
+            attached='bottom'
+            color={percentRaised === 100 ? 'green' : 'violet'}
+          />
         </div>
+      </div>
       )
     })
     return (
@@ -390,9 +427,10 @@ class Dashboard extends React.Component {
     // this.setState({ goals: goalsArray, modal: false, goalCount: this.state.goalCount++ })
   }
 
+
   menu () {
     return (
-      <Menu style={styles.menu} fluid widths={3}>
+      <Menu id='pillsmenu' fluid widths={3}>
         <Menu.Item
           name='goals'
           active={this.state.activeItem === 'goals'}
