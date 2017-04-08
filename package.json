@@ -104,6 +104,7 @@
     "lokijs": "^1.4.3",
     "moment": "^2.18.1",
     "node-sass": "^3.4.2",
+    "nodemon": "^1.11.0",
     "normalize.css": "^5.0.0",
     "postcss-loader": "^1.1.0",
     "react": "^15.0.0",
