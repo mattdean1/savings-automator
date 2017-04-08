@@ -127,7 +127,7 @@ const start = (app) => {
 });
   app.post('/api/sandbox/webhook', (req, res) => {
     console.log('Something received');
-      console.log(res);
+      console.log(req.body);
     starlingApiWrapper.transactions(req, res, starlingClient, getAccessToken(db)).
     then(function(resp){
       client.setex('hardcoded', 60*60*24, 'false');
@@ -147,7 +147,7 @@ const start = (app) => {
       });
       res.json(_.get(resp, 'data._embedded.transactions', []))
   });
-  
+
   if(res){
     client.get('IN_Income_Savings', (err, resp) => {
       if(Number(resp)){
