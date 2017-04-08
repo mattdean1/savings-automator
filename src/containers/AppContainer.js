@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { browserHistory, Router } from 'react-router'
 import $ from 'jquery'
+import {injectReducer} from '../store/reducers'
 import { Provider } from 'react-redux'
 import 'react-select/dist/react-select.css';
 
@@ -35,19 +36,17 @@ class AppContainer extends Component {
   startPolling() {
       var self = this;
       setTimeout(function() {
-        if (!self.isMounted()) { return; } // abandon
         self.poll(); // do it once and then start it up ...
-        self._timer = setInterval(self.poll.bind(self), 15000);
+        self._timer = setInterval(self.poll.bind(self), 5000);
       }, 1000);
   }
 
   poll() {
       var self = this;
       $.get('/api/sandbox/ping', function(result) {
-        if (self.isMounted()) {
+          injectReducer(self.props.store, {key: 'update', result})
           console.log('Success');
           console.log(result);
-        }
       }).fail(function(response) {
         console.log('Fail');
         console.log(response);
