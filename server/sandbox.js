@@ -62,13 +62,6 @@ const refresh = (db) => {
     });
 };
 
-const updateRedis = (payload) => {
-  client.get('hardcoded', (err, resp) => {
-    const data = JSON.parse(resp || '[]');
-    data.push(payload.content);
-    client.setex('hardcoded', 60*60*24, JSON.stringify(data));
-  });
-}
 const start = (app) => {
   debug('Starting sandbox app...');
 
@@ -93,29 +86,20 @@ const start = (app) => {
   const getAccessToken = (db) => persistence.getSandboxTokens(db)['access_token'];
   const starlingClient = new Starling({apiUrl: config.sandboxApi});
 
-  app.get('/api/sandbox/transactions', (req, res) => starlingApiWrapper.transactions(req, res, starlingClient, getAccessToken(db)));
+  app.get('/api/sandbox/transactions', (req, res) => {
+    client.setex('hardcoded', 60*60*24, 'false');
+    starlingApiWrapper.transactions(req, res, starlingClient, getAccessToken(db));
+  });
   app.get('/api/sandbox/balance', (req, res) => starlingApiWrapper.balance(req, res, starlingClient, getAccessToken(db)));
   app.get('/api/sandbox/customer', (req, res) => starlingApiWrapper.customer(req, res, starlingClient, getAccessToken(db)));
   app.post('/api/sandbox/webhook', (req, res) => {
     console.log('Something received');
+    client.setex('hardcoded', 60*60*24, 'true');
     console.log(req.body);
-    updateRedis(req.body);
   });
   app.get('/api/sandbox/ping', (req, res) => {
       client.get('hardcoded', (err, resp) => {
-        res.send(JSON.parse(resp ||'[]'));
-      });
-  });
-  app.get('/getCategory', (req, res) => {
-      client.get('category', (err, resp) => {
-        res.send(JSON.parse(resp ||'[]'));
-      });
-  });
-  app.get('/createCategory/:category', (req, res) => {
-      client.get('category', (err, resp) => {
-        var currentCategory = JSON.parse(resp ||'[]');
-        currentCategory.push(req.params.category);
-        client.setex('category', 60*60*24, JSON.stringify(currentCategory));
+        res.send(resp);
       });
   });
 };

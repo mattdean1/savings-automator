@@ -55,9 +55,14 @@ class Dashboard extends React.Component {
 
   poll() {
       var self = this;
-      $.get('/api/sandbox/ping', function(reducer) {
+      $.get('/api/sandbox/ping', function(res) {
           console.log('Success');
-          console.log(reducer);
+          if(res === 'true') {
+              console.log('New response detected');
+              $.get('/api/sandbox/transactions', function(res) {
+
+              });
+          }
       }).fail(function(response) {
         console.log('Fail');
         console.log(response);
