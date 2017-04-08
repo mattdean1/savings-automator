@@ -65,11 +65,23 @@ class Dashboard extends React.Component {
     this.state = ({
       activeItem: 'goals',
       modal: false,
-      goals
+      goals,
+      newGoal : {
+        title: '',
+        goal: '',
+        raised : 0,
+        category: '',
+        percentage: 0,
+        start_date : '',
+        estimated_end_date : '',
+        estimated_days : 0
+      },
+      goalCount : 0
     })
 
     this.handleItemClick = this.handleItemClick.bind(this)
     this.menu = this.menu.bind(this)
+    this.createGoal = this.createGoal.bind(this)
   }
 
   handleItemClick (e, { name }) {
@@ -115,7 +127,7 @@ class Dashboard extends React.Component {
   plansView (goals) {
     const newArray = goals.map((goal) => {
       return (
-        <div key={goal.title} className='ui cards'>
+        <div key={goal.title + '' + goal.start_date} className='ui cards'>
           <div style={{ width: '100%' }} className='card'>
             <div className='content'>
               <div className='header'>
@@ -167,7 +179,7 @@ class Dashboard extends React.Component {
   goalsView (goals) {
     const newArray = goals.map((goal) => {
       return (
-        <div key={goal.title} className='ui cards'>
+        <div key={goal.title + '' + Math.random()} className='ui cards'>
           <div style={{ width: '100%' }} className='card'>
             <div className='content'>
               <div className='header'>
@@ -206,21 +218,21 @@ class Dashboard extends React.Component {
               <div style={{ 'paddingBottom': 5 }}>
                 <Input labelPosition='left' type='text' placeholder='Holiday to Malta'>
                   <Label basic style={{ width: 100 }}>Name</Label>
-                  <input />
+                  <input onChange={e => this.setState({ 'newGoalTitle' : e.target.value })} />
                 </Input>
               </div>
 
               <div style={{ 'paddingBottom': 5 }}>
                 <Input labelPosition='left' type='text' placeholder='1000'>
                   <Label basic style={{ width: 100 }}>Cost(£)</Label>
-                  <input />
+                  <input onChange={e => this.setState({ 'newGoalCost' : e.target.value })} />
                 </Input>
               </div>
 
               <div style={{ 'paddingBottom': 20 }}>
                 <Input labelPosition='left' type='text' placeholder='Travel'>
                   <Label basic style={{ width: 100 }}>Category</Label>
-                  <input />
+                  <input onChange={e => this.setState({ 'newGoalCategory' : e.target.value })} />
                 </Input>
               </div>
             </Modal.Description>
@@ -228,7 +240,7 @@ class Dashboard extends React.Component {
               <Button basic color='red' onClick={() => this.setState({ modal: false })}>
                 <Icon name='remove' /> Cancel
     </Button>
-              <Button color='green' onClick={() => this.createGoal(name, cost, category)}>
+              <Button color='green' onClick={() => this.createGoal()}>
                 <Icon name='checkmark' /> Create
     </Button>
             </Modal.Actions>
@@ -238,8 +250,19 @@ class Dashboard extends React.Component {
     )
   }
 
-  createGoal (name, cost, category) {
-    // const goal =
+  createGoal () {
+    const newGoal = this.state.newGoal
+    newGoal.title = this.state.newGoalTitle
+    newGoal.category = this.state.newGoalCategory
+    newGoal.goal = this.state.newGoalCost
+    newGoal.start_date = new Date()
+    newGoal.key2 = '' + (+new Date())
+
+    this.setState((state) => {
+      state.goals = state.goals.concat([newGoal])
+      return state
+    })
+    // this.setState({ goals: goalsArray, modal: false, goalCount: this.state.goalCount++ })
   }
 
   menu () {
