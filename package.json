@@ -12,7 +12,7 @@
     "compile": "better-npm-run compile",
     "lint": "eslint bin build config server src tests",
     "lint:fix": "npm run lint -- --fix",
-    "start": "better-npm-run start",
+    "start": "better-npm-run dev",
     "dev": "better-npm-run dev",
     "dev:personal": "better-npm-run dev:personal",
     "dev:sandbox": "better-npm-run dev:sandbox",

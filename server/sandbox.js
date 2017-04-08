@@ -84,6 +84,9 @@ const start = (app) => {
   app.get('/api/sandbox/transactions', (req, res) => starlingApiWrapper.transactions(req, res, starlingClient, getAccessToken(db)));
   app.get('/api/sandbox/balance', (req, res) => starlingApiWrapper.balance(req, res, starlingClient, getAccessToken(db)));
   app.get('/api/sandbox/customer', (req, res) => starlingApiWrapper.customer(req, res, starlingClient, getAccessToken(db)));
+  app.post('/api/sandbox/webhook', (req, res) => {
+    res.send('Returned');
+  });
 };
 
 module.exports = { start };
