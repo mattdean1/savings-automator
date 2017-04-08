@@ -1,0 +1,11 @@
+#pillsmenu {
+  margin-top: -14px;
+  width: 100%;
+  border-radius: 0;
+}
+
+@media (min-width: 600px) {
+  #pillsmenu {
+    margin-top: -52px;
+  }
+}
