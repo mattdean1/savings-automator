@@ -23,9 +23,29 @@ const styles = {
   menu : {
     marginTop: -52,
     width: '100%',
-    borderRadius: 0,
+    borderRadius: 0
   }
-};
+}
+
+const goals = [{
+  title : 'Macbook Pro',
+  goal : 1500,
+  raised : 346.54,
+  percentage : 50,
+  category: 'Technology',
+  start_date : '08/03/17',
+  estimated_end_date : '08/05/17',
+  estimated_days : 44
+}, {
+  title : 'Holiday to Malta',
+  goal : 800,
+  raised : 12.54,
+  percentage : 50,
+  category: 'Holiday',
+  start_date : '06/02/17',
+  estimated_end_date : '08/12/17',
+  estimated_days : 76
+}]
 
 class Dashboard extends React.Component {
 
@@ -37,18 +57,18 @@ class Dashboard extends React.Component {
     children: React.PropTypes.element
   };
 
-  constructor(props) {
-    super(props);
-    this.state = ({activeItem: 'goals'});
+  constructor (props) {
+    super(props)
+    this.state = ({ activeItem: 'goals' })
 
-    this.handleItemClick = this.handleItemClick.bind(this);
-    this.menu = this.menu.bind(this);
+    this.handleItemClick = this.handleItemClick.bind(this)
+    this.menu = this.menu.bind(this)
   }
 
-   handleItemClick (e, { name }) {
-     console.log('active item:' + name);
-     this.setState({ activeItem: name });
-   }
+  handleItemClick (e, { name }) {
+    console.log('active item:' + name)
+    this.setState({ activeItem: name })
+  }
 
   render () {
     const { customer, balance, transactions, mode } = this.props
@@ -59,38 +79,39 @@ class Dashboard extends React.Component {
       <Grid.Column>
         {this.menu()}
         <Container style={{ maxWidth: '970px' }}>
+          {plans({ goals })}
         </Container>
       </Grid.Column>
     )
   }
 
   menu () {
-    return(
+    return (
       <Menu style={styles.menu} fluid widths={3}>
-          <Menu.Item
-            name='editorials'
-            active={this.state.activeItem === 'editorials'}
-            onClick={this.handleItemClick}
+        <Menu.Item
+          name='editorials'
+          active={this.state.activeItem === 'editorials'}
+          onClick={this.handleItemClick}
           >
             Editorials
           </Menu.Item>
 
-          <Menu.Item
-            name='reviews'
-            active={this.state.activeItem === 'reviews'}
-            onClick={this.handleItemClick}
+        <Menu.Item
+          name='reviews'
+          active={this.state.activeItem === 'reviews'}
+          onClick={this.handleItemClick}
           >
             Reviews
           </Menu.Item>
 
-          <Menu.Item
-            name='upcomingEvents'
-            active={this.state.activeItem === 'upcomingEvents'}
-            onClick={this.handleItemClick}
+        <Menu.Item
+          name='upcomingEvents'
+          active={this.state.activeItem === 'upcomingEvents'}
+          onClick={this.handleItemClick}
           >
             Upcoming Events
           </Menu.Item>
-        </Menu>
+      </Menu>
     )
   }
 }
@@ -141,52 +162,39 @@ const Balance = (props) => {
 }
 
 const plans = ({ goals }) => {
+  const newArray = goals.map((goal) => {
+    return (
+      <div key={goal.title} className='ui cards'>
+        <div style={{ width: '100%' }} className='card'>
+          <div className='content'>
+            <div className='header'>
+              {goal.title}
+            </div>
+            <div className='meta'>
+              £{goal.raised} out of £{goal.goal}
+            </div>
+            <div className='description'>
+              Estimated Saving Days: <strong>{goal.estimated_days}</strong>
+            </div>
+          </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
+            {/* <div className='ui icon buttons'>
+              <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
+              <div className='increment ui basic green button icon'><i className='plus icon' /></div>
+            </div> */}
+          </div>
+          <div className='ui bottom attached progress'>
+            <div className='indicating bar' />
+          </div>
+        </div>
+      </div>
+    )
+  })
   return (
-    <div className='ui cards'>
-      <div className='card'>
-        <div className='content'>
-          <div className='header'>
-            Macbook Pro 2015
-          </div>
-          <div className='meta'>
-            £362 out of £1,500
-          </div>
-          <div className='description'>
-            Estimated Saving Days: <strong>44</strong>
-          </div>
-        </div>
-        <div className='extra content'>
-          <h4>Savings Allocation</h4>
-          {/* <div className='ui two buttons'>
-            <div className='ui basic green button'>Approve</div>
-            <div className='ui basic red button'>Decline</div>
-          </div> */}
-        </div>
-      </div>
-      <div className='card'>
-        <div className='content'>
-          <div className='header'>
-            Jenny Hess
-          </div>
-          <div className='meta'>
-            New Member
-          </div>
-          <div className='description'>
-            Jenny wants to add you to the group <b>best friends</b>
-          </div>
-        </div>
-        <div className='extra content'>
-          <div className='ui two buttons'>
-            <div className='ui basic green button'>Approve</div>
-            <div className='ui basic red button'>Decline</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div>{ newArray }</div>
   )
 }
-
-
 
 // While the API is different in demo and prod
 const OldBalance = ({ balance }) => {
