@@ -33,7 +33,9 @@ class Dashboard extends React.Component {
     const { firstName } = customer
     const name = customer && firstName ? firstName + "'s Account" : 'Your Account'
 
-    return <Container style={{ maxWidth: '970px' }} />
+    return <Container style={{ maxWidth: '970px' }}>
+      {plans({})}
+    </Container>
   }
 }
 
@@ -80,6 +82,52 @@ const Balance = (props) => {
       </div>
     )
   }
+}
+
+const plans = ({ goals }) => {
+  return (
+    <div className='ui cards'>
+      <div className='card'>
+        <div className='content'>
+          <div className='header'>
+            Macbook Pro 2015
+          </div>
+          <div className='meta'>
+            £362 out of £1,500
+          </div>
+          <div className='description'>
+            Estimated Saving Days: <strong>44</strong>
+          </div>
+        </div>
+        <div className='extra content'>
+          <h4>Savings Allocation</h4>
+          {/* <div className='ui two buttons'>
+            <div className='ui basic green button'>Approve</div>
+            <div className='ui basic red button'>Decline</div>
+          </div> */}
+        </div>
+      </div>
+      <div className='card'>
+        <div className='content'>
+          <div className='header'>
+            Jenny Hess
+          </div>
+          <div className='meta'>
+            New Member
+          </div>
+          <div className='description'>
+            Jenny wants to add you to the group <b>best friends</b>
+          </div>
+        </div>
+        <div className='extra content'>
+          <div className='ui two buttons'>
+            <div className='ui basic green button'>Approve</div>
+            <div className='ui basic red button'>Decline</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 // While the API is different in demo and prod
