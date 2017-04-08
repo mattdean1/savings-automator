@@ -151,6 +151,7 @@ const start = (app) => {
     if(req.body.content.type === 'TRANSACTION_FASTER_PAYMENT_IN'){
       client.get('IN_Income_Savings', (err, resp) => {
         console.log('IN_Income_Savings')
+        resp = '1';
         if(Number(resp)){
           starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + (req.body.content.amount * Number(resp3)/100 ));
         }
@@ -167,6 +168,7 @@ const start = (app) => {
           if(Number(resp3)){
             tax += (req.body.content.amount * Number(resp3)/100);
           }
+          tax += 1;
           console.log('Tax: ' + tax);
           if(tax){
             starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + tax);
