@@ -79,7 +79,7 @@ class Dashboard extends React.Component {
       <Grid.Column>
         {this.menu()}
         <Container style={{ maxWidth: '970px' }}>
-          {plans({ goals })}
+          {plansView({ goals })}
         </Container>
       </Grid.Column>
     )
@@ -161,7 +161,7 @@ const Balance = (props) => {
   }
 }
 
-const plans = ({ goals }) => {
+const goalsView = ({ goals }) => {
   const newArray = goals.map((goal) => {
     return (
       <div key={goal.title} className='ui cards'>
@@ -186,6 +186,32 @@ const plans = ({ goals }) => {
           </div>
           <div className='ui bottom attached progress'>
             <div className='indicating bar' />
+          </div>
+        </div>
+      </div>
+    )
+  })
+  return (
+    <div>{ newArray }</div>
+  )
+}
+
+const plansView = ({ goals }) => {
+  const newArray = goals.map((goal) => {
+    return (
+      <div key={goal.title} className='ui cards'>
+        <div style={{ width: '100%' }} className='card'>
+          <div className='content'>
+            <div className='header'>
+              {goal.title}
+            </div>
+          </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
+            <div style={{ float:'right' }} className='ui icon buttons'>
+              <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
+              <div className='increment ui basic green button icon'><i className='plus icon' /></div>
+            </div>
           </div>
         </div>
       </div>
