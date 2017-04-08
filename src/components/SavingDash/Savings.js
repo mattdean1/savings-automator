@@ -89,52 +89,52 @@ class Dashboard extends React.Component {
 
     this.handleItemClick = this.handleItemClick.bind(this)
     this.menu = this.menu.bind(this)
-    this.startPolling = this.startPolling.bind(this);
-    this.poll = this.poll.bind(this);
-    this.getNewTransaction = this.getNewTransaction.bind(this);
+    this.startPolling = this.startPolling.bind(this)
+    this.poll = this.poll.bind(this)
+    this.getNewTransaction = this.getNewTransaction.bind(this)
   }
 
-  getNewTransaction() {
-    $.get('/api/sandbox/transactions', function(res) {
-      console.log('Updated Transactions');
-      console.log(res.length);
-      this.setState({transactions: res});
-    });
+  getNewTransaction () {
+    $.get('/api/sandbox/transactions', function (res) {
+      console.log('Updated Transactions')
+      console.log(res.length)
+      this.setState({ transactions: res })
+    })
   }
 
-  componentDidMount() {
-    this.getNewTransaction();
-    this.startPolling();
+  componentDidMount () {
+    this.getNewTransaction()
+    this.startPolling()
   }
 
-  componentWillUnmount() {
-      if (this._timer) {
-        clearInterval(this._timer);
-        this._timer = null;
+  componentWillUnmount () {
+    if (this._timer) {
+      clearInterval(this._timer)
+      this._timer = null
+    }
+  }
+
+  startPolling () {
+    var self = this
+    setTimeout(function () {
+      self.poll() // do it once and then start it up ...
+      self._timer = setInterval(self.poll.bind(self), 5000)
+    }, 1000)
+  }
+
+  poll () {
+    var transaction = this.getNewTransaction
+    var self = this
+    $.get('/api/sandbox/ping', function (res) {
+      console.log(res)
+      if (res === 'true') {
+        console.log('New response detected')
+        transaction()
       }
-  }
-
-  startPolling() {
-      var self = this;
-      setTimeout(function() {
-        self.poll(); // do it once and then start it up ...
-        self._timer = setInterval(self.poll.bind(self), 5000);
-      }, 1000);
-  }
-
-  poll() {
-      var transaction = this.getNewTransaction;
-      var self = this;
-      $.get('/api/sandbox/ping', function(res) {
-        console.log(res);
-          if(res === 'true') {
-            console.log('New response detected');
-            transaction();
-          }
-      }).fail(function(response) {
-        console.log('Fail');
-        console.log(response);
-      });
+    }).fail(function (response) {
+      console.log('Fail')
+      console.log(response)
+    })
     this.createGoal = this.createGoal.bind(this)
   }
 
@@ -143,12 +143,28 @@ class Dashboard extends React.Component {
     this.setState({ activeItem: name })
   }
 
+  postRules () {
+    const rules = {
+      IN_Income_Savings : this.state.IN_Income_Savings,
+      OUT_RoundUp : this.state.OUT_RoundUp,
+      OUT_PersonalTax : this.state.OUT_PersonalTax
+    }
+    $.post('/api/sandbox/rules', rules, function (res) {
+      console.log(res)
+      if (res === 'true') {
+        console.log('New response detected')
+      }
+    }).fail(function (response) {
+      console.log('Fail')
+      console.log(response)
+    })
+  }
+
   render () {
     const { customer, balance, transactions, mode } = this.props
     const { firstName } = customer
     const name = customer && firstName ? firstName + "'s Account" : 'Your Account'
 
-    console.log(this.state)
     if (this.state.activeItem === 'plan') {
       return (
         <Grid.Column>
@@ -233,7 +249,7 @@ class Dashboard extends React.Component {
             <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}><strong /></h4>
             <div style={{ float:'left' }}>
               <Input
-                onChange={(e, data) => { console.log(data); this.setState({ 'IN_Income_Savings' : data.value }) }}
+                onChange={(e, data) => { console.log(data); this.setState({ 'IN_Income_Savings' : data.value }, () => { this.postRules() }) }}
                 label={{ basic: true, content: '%' }}
                 labelPosition='right'
                 placeholder='Enter Percentage'
@@ -259,7 +275,7 @@ class Dashboard extends React.Component {
             <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}><strong /></h4>
             <div style={{ float:'left' }}>
               <Input
-                onChange={(e, data) => { console.log(data); this.setState({ 'OUT_PersonalTax' : data.value }) }}
+                onChange={(e, data) => { console.log(data); this.setState({ 'OUT_PersonalTax' : data.value }, () => { this.postRules() }) }}
                 label={{ basic: true, content: '%' }}
                 labelPosition='right'
                 placeholder='Enter Percentage'
@@ -272,7 +288,7 @@ class Dashboard extends React.Component {
               <div className='checkbox'>
             Round-Up Change
                 <Checkbox
-                  onChange={(e, data) => { this.setState({ 'OUT_RoundUp' : data.checked }) }}
+                  onChange={(e, data) => { this.setState({ 'OUT_RoundUp' : data.checked }, () => { this.postRules() }) }}
                   toggle name='example' style={{ float:'right', cursor: 'pointer' }}
                   value={this.state.OUT_RoundUp}
                 />
