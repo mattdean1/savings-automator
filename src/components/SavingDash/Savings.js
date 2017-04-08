@@ -1,5 +1,6 @@
 import React from 'react'
 
+import update from 'immutability-helper'
 import $ from 'jquery'
 import {
   Grid,
@@ -16,7 +17,10 @@ import {
   Button,
   Menu,
   Modal,
-  Input
+  Input,
+
+  Progress,
+  Checkbox
 } from 'semantic-ui-react'
 import SelectorDropdown from '../../components/SelectorDropdown/SelectorDropdown'
 import { Link } from 'react-router'
@@ -31,10 +35,10 @@ const styles = {
   }
 }
 
-const goals = [{
+const sampleGoals = [{
   title : 'Macbook Pro',
   goal : 1500,
-  raised : 346.54,
+  raised : 1500,
   percentage : 50,
   category: 'Technology',
   start_date : '08/03/17',
@@ -66,8 +70,19 @@ class Dashboard extends React.Component {
     this.state = ({
       activeItem: 'goals',
       modal: false,
-      goals,
       transactions: [],
+      goals : sampleGoals,
+      newGoal : {
+        title: '',
+        goal: '',
+        raised : 0,
+        category: '',
+        percentage: 0,
+        start_date : '',
+        estimated_end_date : '',
+        estimated_days : 0
+      },
+      goalCount : 0
     })
 
     this.handleItemClick = this.handleItemClick.bind(this)
@@ -118,6 +133,7 @@ class Dashboard extends React.Component {
         console.log('Fail');
         console.log(response);
       });
+    this.createGoal = this.createGoal.bind(this)
   }
 
   handleItemClick (e, { name }) {
@@ -129,6 +145,7 @@ class Dashboard extends React.Component {
     const { customer, balance, transactions, mode } = this.props
     const { firstName } = customer
     const name = customer && firstName ? firstName + "'s Account" : 'Your Account'
+
     console.log('test')
     if (this.state.activeItem === 'plan') {
       return (
@@ -163,7 +180,7 @@ class Dashboard extends React.Component {
   plansView (goals) {
     const newArray = goals.map((goal) => {
       return (
-        <div key={goal.title} className='ui cards'>
+        <div key={goal.title + '' + goal.start_date} className='ui cards'>
           <div style={{ width: '100%' }} className='card'>
             <div className='content'>
               <div className='header'>
@@ -187,35 +204,63 @@ class Dashboard extends React.Component {
   }
 
   rulesView (goals) {
-    const newArray = goals.map((goal) => {
-      return (
-        <div key={goal.title} className='ui cards'>
-          <div style={{ width: '100%' }} className='card'>
-            <div className='content'>
-              <div className='header'>
-                {goal.title}
+    return (
+
+      <div className='ui cards'>
+        <div style={{ width: '100%' }} className='card'>
+          <Label attached='top'>Incoming</Label>
+          <div className='content'>
+            <div className='header'>
+              <div className='checkbox'>
+              Placeholder
+              <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
               </div>
             </div>
-            <div className='extra content'>
-              <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
-              <div style={{ float:'right' }} className='ui icon buttons'>
-                <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
-                <div className='increment ui basic green button icon'><i className='plus icon' /></div>
+          </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}><strong /></h4>
+            <div style={{ float:'left' }}>
+              <Input
+                label={{ basic: true, content: '%' }}
+                labelPosition='right'
+                placeholder='Enter Percentage'
+              />
+            </div>
+          </div>
+        </div>
+
+        <div style={{ width: '100%' }} className='card'>
+          <Label attached='top'>Outgoing</Label>
+          <div className='content'>
+            <div className='header'>
+              <div className='checkbox'>
+              Personal Tax
+              <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
+              </div>
+            </div>
+          </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>%</strong></h4>
+            <div style={{ float:'right' }} className='ui icon buttons' />
+          </div>
+          <div className='content'>
+            <div className='header'>
+              <div className='checkbox'>
+            Round-Up Change
+            <Checkbox toggle name='example' style={{ float:'right', cursor: 'pointer' }} />
               </div>
             </div>
           </div>
         </div>
-      )
-    })
-    return (
-      <div>{ newArray }</div>
+
+      </div>
     )
   }
 
   goalsView (goals) {
     const newArray = goals.map((goal) => {
       return (
-        <div key={goal.title} className='ui cards'>
+        <div key={goal.title + '' + Math.random()} className='ui cards'>
           <div style={{ width: '100%' }} className='card'>
             <div className='content'>
               <div className='header'>
@@ -254,21 +299,21 @@ class Dashboard extends React.Component {
               <div style={{ 'paddingBottom': 5 }}>
                 <Input labelPosition='left' type='text' placeholder='Holiday to Malta'>
                   <Label basic style={{ width: 100 }}>Name</Label>
-                  <input />
+                  <input onChange={e => this.setState({ 'newGoalTitle' : e.target.value })} />
                 </Input>
               </div>
 
               <div style={{ 'paddingBottom': 5 }}>
                 <Input labelPosition='left' type='text' placeholder='1000'>
                   <Label basic style={{ width: 100 }}>Cost(£)</Label>
-                  <input />
+                  <input onChange={e => this.setState({ 'newGoalCost' : e.target.value })} />
                 </Input>
               </div>
 
               <div style={{ 'paddingBottom': 20 }}>
                 <Input labelPosition='left' type='text' placeholder='Travel'>
                   <Label basic style={{ width: 100 }}>Category</Label>
-                  <input />
+                  <input onChange={e => this.setState({ 'newGoalCategory' : e.target.value })} />
                 </Input>
               </div>
             </Modal.Description>
@@ -276,7 +321,7 @@ class Dashboard extends React.Component {
               <Button basic color='red' onClick={() => this.setState({ modal: false })}>
                 <Icon name='remove' /> Cancel
     </Button>
-              <Button color='green' onClick={() => this.createGoal(name, cost, category)}>
+              <Button color='green' onClick={() => this.createGoal()}>
                 <Icon name='checkmark' /> Create
     </Button>
             </Modal.Actions>
@@ -286,8 +331,18 @@ class Dashboard extends React.Component {
     )
   }
 
-  createGoal (name, cost, category) {
-    // const goal =
+  createGoal () {
+    const newGoal = this.state.newGoal
+    newGoal.title = this.state.newGoalTitle
+    newGoal.category = this.state.newGoalCategory
+    newGoal.goal = this.state.newGoalCost
+    newGoal.start_date = new Date()
+    newGoal.key2 = '' + (+new Date())
+
+    let goalsArray = update(this.state.goals, { $push: [newGoal] })
+
+    this.setState({ goals: goalsArray })
+    // this.setState({ goals: goalsArray, modal: false, goalCount: this.state.goalCount++ })
   }
 
   menu () {

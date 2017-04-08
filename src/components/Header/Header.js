@@ -5,17 +5,18 @@ import logo from '../../assets/safe-logo.png'
 
 const styles = {
   header : {
-    boxShadow: 'none'
+    boxShadow: 'none',
+    backgroundColor: '#1E1937',
   }
 };
 
 export const Header = () => (
   <div>
-    <Menu fixed='top' inverted style={styles.header}>
+    <Menu fixed='top' inverted style={styles.header} fluid widths={1}>
       <Link to='/'>
-        <Menu.Item className=''>
+        <Menu.Item className='' style={{borderRight: 0}}>
           {/* <Image src='' className='ui image' alt='Back' width='60px' /> */}
-          <p style={{ color: '#1E1937' }} className='brand'>Automatic Savings</p>
+          <h1 style={{ color: 'white', fontWeight: '100', letterSpacing: '5px'}}>STARLING SAVINGS AUTOMATOR</h1>
         </Menu.Item>
       </Link>
     </Menu>
