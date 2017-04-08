@@ -1,4 +1,5 @@
 import React from 'react'
+import $ from 'jquery'
 import {
   Grid,
   Container,
@@ -76,14 +77,49 @@ class Dashboard extends React.Component {
     const { firstName } = customer
     const name = customer && firstName ? firstName + "'s Account" : 'Your Account'
 
-    return (
-      <Grid.Column>
-        {this.menu()}
-        <Container style={{ maxWidth: '970px' }}>
-          {goalsView({ goals })}
-        </Container>
-      </Grid.Column>
-    )
+    console.log('test')
+    if (this.state.activeItem === 'plan') {
+      return (
+        <Grid.Column>
+          {this.menu()}
+          <Container style={{ maxWidth: '970px' }}>
+            <div id='goalsModal' className='ui modal'>
+              <div className='header'>Header</div>
+              <div className='content'>
+                <p />
+              </div>
+              <div className='actions'>
+                <div className='ui approve button'>Approve</div>
+                <div className='ui button'>Neutral</div>
+                <div className='ui cancel button'>Cancel</div>
+              </div>
+            </div>
+            {plansView({ goals })}
+          </Container>
+        </Grid.Column>
+      )
+    } else if (this.state.activeItem === 'rules') {
+      return (
+        <Grid.Column>
+          {this.menu()}
+          <Container style={{ maxWidth: '970px' }}>
+            {rulesView({ goals })}
+          </Container>
+        </Grid.Column>
+      )
+    } else {
+      return (
+        <Grid.Column>
+          {this.menu()}
+          <Container style={{ maxWidth: '970px' }}>
+            {goalsView({ goals })}
+            <button onClick={() => {
+              $('#goalsModal').modal('show')
+            }} style={{ width: '100%', marginTop: 25 }} className='positive ui button'>Create a Goal</button>
+          </Container>
+        </Grid.Column>
+      )
+    }
   }
 
   menu () {
@@ -176,7 +212,7 @@ const goalsView = ({ goals }) => {
               £{goal.raised} out of £{goal.goal}
             </div>
             <div className='description'>
-              Estimated Days To Achievement: <strong>{goal.estimated_days}</strong> 
+              Estimated Days To Achievement: <strong>{goal.estimated_days}</strong>
             </div>
           </div>
           <div className='extra content'>
@@ -191,6 +227,58 @@ const goalsView = ({ goals }) => {
             attached='bottom'
             color={percentRaised === 100 ? 'green' : 'violet'}
           />
+        </div>
+      </div>
+    )
+  })
+  return (
+    <div>{ newArray }</div>
+  )
+}
+
+const plansView = ({ goals }) => {
+  const newArray = goals.map((goal) => {
+    return (
+      <div key={goal.title} className='ui cards'>
+        <div style={{ width: '100%' }} className='card'>
+          <div className='content'>
+            <div className='header'>
+              {goal.title}
+            </div>
+          </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
+            <div style={{ float:'right' }} className='ui icon buttons'>
+              <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
+              <div className='increment ui basic green button icon'><i className='plus icon' /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  })
+  return (
+    <div>{ newArray }</div>
+  )
+}
+
+const rulesView = ({ goals }) => {
+  const newArray = goals.map((goal) => {
+    return (
+      <div key={goal.title} className='ui cards'>
+        <div style={{ width: '100%' }} className='card'>
+          <div className='content'>
+            <div className='header'>
+              {goal.title}
+            </div>
+          </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
+            <div style={{ float:'right' }} className='ui icon buttons'>
+              <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
+              <div className='increment ui basic green button icon'><i className='plus icon' /></div>
+            </div>
+          </div>
         </div>
       </div>
     )
