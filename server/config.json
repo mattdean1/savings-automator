@@ -1,6 +1,6 @@
 {
-  "clientId": "TYnR0A0BqZXUeKjcadxV",
-  "clientSecret": "DzsEnerc40BD6tZEmVaoV0XGRMs68GFliXuxFoE6",
+  "clientId": "hNfiNn6nrCXNqRxguch9",
+  "clientSecret": "atwE4iwprJRhkqNLGqnaVS8NNU7z08V8h2L87Lcb",
 
   "cookieSecret": "21e361d0-ff2c-4763-a084-1032f2103ce8",
 
@@ -11,8 +11,8 @@
   "SANDBOX_CONFIG_COMMENT": "Do not keep the token store file in the app root dir or it will restart when you are watching it with yarn run dev everytime it is written to!",
   "sandboxLocalTokenStore": "../starling-api-web-starter-kit-sandbox-token-store.json",
   "sandboxApi": "https://api-sandbox.starlingbank.com/",
-  "sandboxAccessToken": "4qM59NtNaRNCa0si5CX025FAExAusasxStsWBoCfeqscnxKqluvvs739yGu5rdjX",
-  "refreshToken": "T8lZDR5uhAmutoo89qgWbLLfoVENlUBvbYN7MflCYNvFiZFrdTPmJbhc1y8G9B1r",
+  "sandboxAccessToken": "WFE93UsBC3FiTG5wmv0ZpC2bZdfJhk5Aix8ENMVRsmcKknzKhKc4hEvBsq8inFEN",
+  "refreshToken": "ezeYcVkh388DmpCtEG5VosGcAEizwY5SMkxFhglSNd0iRdvtTftGYbUJkMkxkTWf",
 
   "oauthApi": "https://oauth.starlingbank.com",
   "oauthRedirectUri": "http://localhost:3000/callback"
