@@ -89,27 +89,27 @@ class Dashboard extends React.Component {
     return (
       <Menu style={styles.menu} fluid widths={3}>
         <Menu.Item
-          name='editorials'
-          active={this.state.activeItem === 'editorials'}
+          name='goals'
+          active={this.state.activeItem === 'goals'}
           onClick={this.handleItemClick}
           >
-            Editorials
+            Goals
           </Menu.Item>
 
         <Menu.Item
-          name='reviews'
-          active={this.state.activeItem === 'reviews'}
+          name='plan'
+          active={this.state.activeItem === 'plan'}
           onClick={this.handleItemClick}
           >
-            Reviews
+            Plan
           </Menu.Item>
 
         <Menu.Item
-          name='upcomingEvents'
-          active={this.state.activeItem === 'upcomingEvents'}
+          name='rules'
+          active={this.state.activeItem === 'rules'}
           onClick={this.handleItemClick}
           >
-            Upcoming Events
+            Rules
           </Menu.Item>
       </Menu>
     )
