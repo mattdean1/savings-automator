@@ -125,6 +125,8 @@ const start = (app) => {
   })
 
   app.post('/api/sandbox/rules', (req, res) => {
+    console.log('Ping rules')
+    console.log(req.body)
     client.set('OUT_RoundUp', JSON.stringify(req.body.OUT_RoundUp), redis.print)
     client.set('OUT_PersonalTax', JSON.stringify(req.body.OUT_PersonalTax), redis.print)
     client.set('IN_Income_Savings', JSON.stringify(req.body.IN_Income_Savings), redis.print)
@@ -156,15 +158,19 @@ const start = (app) => {
       if (req.body.content.type === 'TRANSACTION_FASTER_PAYMENT_IN') {
         client.get('IN_Income_Savings', (err, resp) => {
           console.log('IN_Income_Savings')
+
+          console.log('resp ' + resp)
           if (!Number(resp)) resp = '1'
           if (Number(resp)) {
             starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + (req.body.content.amount * Number(resp) / 100))
           }
         })
-      } else if (res.body.content.type === 'TRANSACTION_FASTER_PAYMENT_OUT') {
+      } else if (req.body.content.type === 'TRANSACTION_FASTER_PAYMENT_OUT') {
         var tax = 0
         client.get('OUT_RoundUp', (err2, resp2) => {
+          console.log('resp2 ' + resp2)
           client.get('OUT_PersonalTax', (err3, resp3) => {
+            console.log('resp3 ' + resp3)
             console.log('OUT_PersonalTax')
             if (Number(resp2)) {
               tax += Math.ceil(req.body.content.amount) - req.body.content.amount
