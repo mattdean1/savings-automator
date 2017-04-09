@@ -16,8 +16,7 @@ export const Header = () => (
   <div>
     <Menu fixed='top' inverted style={styles.header} fluid widths={1}>
         <Menu.Item className='' style={{borderRight: 0}}>
-          {/* <Image src='' className='ui image' alt='Back' width='60px' /> */}
-          <h1 style={{ color: 'white', fontWeight: '100', letterSpacing: '5px'}}>STARLING SAVINGS AUTOMATOR</h1>
+          <h1 style={{ color: 'white', fontWeight: '100', letterSpacing: '5px', fontFamily: 'Helvetica Neue'}}>STARLING SAVINGS AUTOMATOR</h1>
         </Menu.Item>
     </Menu>
   </div>

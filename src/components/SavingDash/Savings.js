@@ -364,15 +364,14 @@ class Dashboard extends React.Component {
                   this.setState({confirmModal: true, indexToDelete: index});
                 }}
               >
-                <Icon name='remove' /> 
+                <Icon name='remove' />
               </Button>
             </div>
             <div className='meta'>
               £{goal.raised} out of £{goal.goal}
-              </div>
-              <div className='description'>
+            </div>
+            <div className='description'>
               Estimated Days To Achievement: <strong>{goal.estimated_days}</strong>
-              </div>
             </div>
           </div>
           <div className='extra content'>
@@ -384,7 +383,8 @@ class Dashboard extends React.Component {
             attached='bottom'
             color={percentRaised === 100 ? 'green' : 'violet'}
           />
-          </div>
+        </div>
+      </div>
       )
     })
     return (
@@ -483,7 +483,7 @@ if(this.state.newGoalTitle != '' && this.state.newGoalTitle != undefined) {
   menu () {
     return (
     <div id='pillsmenu'>
-      <div id='totalsaved'>TOTAL SAVED: £55</div>
+      <div id='totalsaved'>TOTAL SAVED: £{this.state.totalSaved}</div>
 
       <Menu id='pills' fluid widths={3}>
         <Menu.Item
