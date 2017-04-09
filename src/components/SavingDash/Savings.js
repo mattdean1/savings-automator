@@ -223,9 +223,11 @@ class Dashboard extends React.Component {
       const goalCopy = goal
       if (index === goalindex) {
         goalCopy.percentage = newvalue
+        goalCopy.percentage = Math.round(goalCopy.percentage * 100) /100;
         return goalCopy
       } else {
-        goalCopy.percentage = goalCopy.percentage - share
+        goalCopy.percentage = goalCopy.percentage - share;
+        goalCopy.percentage = Math.round(goalCopy.percentage * 100) /100;
         return goalCopy
       }
     })
@@ -437,9 +439,19 @@ class Dashboard extends React.Component {
               <Icon name='remove' /> No
             </Button>
             <Button color='green' inverted onClick={() => {
+              const removedValue = this.state.goals[this.state.indexToDelete].percentage;
               //remove the goal from state
               let newGoals = this.state.goals;
               newGoals = update(newGoals, {$splice: [[this.state.indexToDelete, 1]]});
+              //recalculate percentages
+              const numGoalsRemaining = newGoals.length;
+              const share = removedValue / numGoalsRemaining;
+              newGoals = newGoals.map((goal) => {
+                let goalCopy = goal;
+                goalCopy.percentage = goalCopy.percentage + share;
+                goalCopy.percentage = Math.round(goalCopy.percentage * 100) /100;
+                return goalCopy;
+              })
               this.setState({goals: newGoals, confirmModal: false});
             }}>
               <Icon name='checkmark' /> Yes
