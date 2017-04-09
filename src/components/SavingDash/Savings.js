@@ -84,7 +84,8 @@ class Dashboard extends React.Component {
       OUT_RoundUp : false,
       OUT_PersonalTax: 0,
       slidervalue: 50,
-      indexToDelete: 0,
+      totalSaved: 0,
+      indexToDelete: 0
     })
 
     this.handleItemClick = this.handleItemClick.bind(this)
@@ -95,10 +96,20 @@ class Dashboard extends React.Component {
   }
 
   getNewTransaction () {
+    var self = this
     $.get('/api/sandbox/transactions', function (res) {
       console.log('Updated Transactions')
       console.log(res.length)
-      this.setState({ transactions: res })
+      console.log(res)
+      var total = 0
+      for (var i = 0; i < res.length; i += 1) {
+        if (res[i].narrative === 'SAVING') total += Math.abs(res[i].amount)
+      }
+      var goals = self.state.goals
+      for (var i = 0; i < goals.length; i += 1) {
+        goals[i].raised = total * goals[i].percentage / 100
+      }
+      self.setState({ transactions: res, totalSaved: total, goals })
     })
   }
 
@@ -167,7 +178,7 @@ class Dashboard extends React.Component {
 
     if (this.state.activeItem === 'plan') {
       return (
-        <Grid.Column style={{padding: 0}}>
+        <Grid.Column style={{ padding: 0 }}>
           {this.menu()}
           <Container style={{ maxWidth: '970px' }}>
             {this.plansView(this.state.goals)}
@@ -176,7 +187,7 @@ class Dashboard extends React.Component {
       )
     } else if (this.state.activeItem === 'rules') {
       return (
-        <Grid.Column style={{padding: 0}}>
+        <Grid.Column style={{ padding: 0 }}>
           {this.menu()}
           <Container style={{ maxWidth: '970px' }}>
             {this.rulesView(this.state.goals)}
@@ -185,7 +196,7 @@ class Dashboard extends React.Component {
       )
     } else {
       return (
-        <Grid.Column style={{padding: 0}}>
+        <Grid.Column style={{ padding: 0 }}>
           {this.menu()}
           <Container style={{ maxWidth: '970px' }}>
             {this.goalsView(this.state.goals)}
@@ -197,55 +208,55 @@ class Dashboard extends React.Component {
 
   handleSlider (goalindex, oldvalue, newvalue) {
     // Get delta slide value
-    const valueChange = newvalue - oldvalue;
+    const valueChange = newvalue - oldvalue
 
     // divvy that out to the other slides
-    const numGoals = this.state.goals.length - 1;
-    const share = valueChange / numGoals;
+    const numGoals = this.state.goals.length - 1
+    const share = valueChange / numGoals
 
-    //edge cases - odd number of goals?
+    // edge cases - odd number of goals?
 
     // Update state with new goal value
     const newGoals = this.state.goals.map((goal, index) => {
-      const goalCopy = goal;
-      if(index === goalindex){
-        goalCopy.percentage = newvalue;
-        return goalCopy;
+      goal.raised = this.state.totalSaved * goal.percentage / 100
+
+      const goalCopy = goal
+      if (index === goalindex) {
+        goalCopy.percentage = newvalue
+        return goalCopy
       } else {
-        goalCopy.percentage = goalCopy.percentage - share;
+        goalCopy.percentage = goalCopy.percentage - share
         return goalCopy
       }
     })
-    this.setState({goals: newGoals});
-
-
+    this.setState({ goals: newGoals })
   }
 
   plansView (goals) {
     const newArray = goals.map((goal, index) => {
       return (
         <div key={goal.title} className='ui cards'>
-        <div style={{ width: '100%' }} className='card'>
-          <div className='content'>
-            <div className='header'>
-              {goal.title}
-              <span style={{float: 'right'}}>{goal.percentage}%</span>
+          <div style={{ width: '100%' }} className='card'>
+            <div className='content'>
+              <div className='header'>
+                {goal.title}
+                <span style={{ float: 'right' }}>{goal.percentage}%</span>
+              </div>
             </div>
-          </div>
-          <div className='extra content'>
-            <div key={goal.title + '' + goal.start_date}>
-              <div className='slider'>
-                <Slider
-                  min={0}
-                  max={100}
-                  value={goal.percentage}
-                  onChange={(newvalue) => this.handleSlider(index, goal.percentage, newvalue)}
+            <div className='extra content'>
+              <div key={goal.title + '' + goal.start_date}>
+                <div className='slider'>
+                  <Slider
+                    min={0}
+                    max={100}
+                    value={goal.percentage}
+                    onChange={(newvalue) => this.handleSlider(index, goal.percentage, newvalue)}
                 />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       )
     })
     return (
@@ -358,9 +369,10 @@ class Dashboard extends React.Component {
             </div>
             <div className='meta'>
               £{goal.raised} out of £{goal.goal}
-            </div>
-            <div className='description'>
+              </div>
+              <div className='description'>
               Estimated Days To Achievement: <strong>{goal.estimated_days}</strong>
+              </div>
             </div>
           </div>
           <div className='extra content'>
@@ -372,8 +384,7 @@ class Dashboard extends React.Component {
             attached='bottom'
             color={percentRaised === 100 ? 'green' : 'violet'}
           />
-        </div>
-      </div>
+          </div>
       )
     })
     return (
@@ -460,12 +471,14 @@ class Dashboard extends React.Component {
 if(this.state.newGoalTitle != '' && this.state.newGoalTitle != undefined) {
   console.log(this.state.newGoalTitle)
   let goalsArray = update(this.state.goals, { $push: [newGoal] })
+  for (var i = 0; i < goalsArray.length; i += 1) {
+    goalsArray[i].raised = this.state.totalSaved * goalsArray[i].percentage / 100
+  }
   this.setState({ goals: goalsArray, modal: false, newGoalTitle: '', newGoalCategory: '', newGoalCost: 0})
 } else {
   this.setState({ modal: false})
 }
   }
-
 
   menu () {
     return (

@@ -125,9 +125,11 @@ const start = (app) => {
   })
 
   app.post('/api/sandbox/rules', (req, res) => {
-    client.set('OUT_RoundUp', JSON.stringify(req.body.OUT_RoundUp), redis.print)
-    client.set('OUT_PersonalTax', JSON.stringify(req.body.OUT_PersonalTax), redis.print)
-    client.set('IN_Income_Savings', JSON.stringify(req.body.IN_Income_Savings), redis.print)
+    console.log('Ping rules')
+    console.log(req.body)
+    client.set('OUT_RoundUp', req.body.OUT_RoundUp === 'false' ? 0 : 1, redis.print)
+    client.set('OUT_PersonalTax', req.body.OUT_PersonalTax, redis.print)
+    client.set('IN_Income_Savings', req.body.IN_Income_Savings, redis.print)
   })
 
   app.post('/api/sandbox/webhook', (req, res) => {
@@ -142,30 +144,33 @@ const start = (app) => {
       for (var i = 0; i < list.length; i += 1) {
         promises.push(starlingApiWrapper.transaction(starlingClient, getAccessToken(db), list[i]['id']))
       }
-      Promise.all(promises).then(function(res){
-             console.log('Updated via webhook');
-             for(var i = 0; i < res.length; i += 1){
-               res[i] = _.get( res[i], 'data', [])
-             }
-            client.setex('getAll', 60*60*24, JSON.stringify(res));
-            client.setex('hardcoded', 60*60*24, 'true');
-      });
-      res.json(_.get(resp, 'data._embedded.transactions', []))
-  });
-  if(req.body.content.reference !== 'SAVING'){
-    if(req.body.content.type === 'TRANSACTION_FASTER_PAYMENT_IN'){
-      client.get('IN_Income_Savings', (err, resp) => {
-        console.log('IN_Income_Savings')
-        resp = '1';
-        if(Number(resp)){
-          starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + (req.body.content.amount * Number(resp)/100 ));
+      Promise.all(promises).then(function (res) {
+        console.log('Updated via webhook')
+        for (var i = 0; i < res.length; i += 1) {
+          res[i] = _.get(res[i], 'data', [])
         }
-      });
-    }
-      else if (res.body.content.type === 'TRANSACTION_FASTER_PAYMENT_OUT') {
+        client.setex('getAll', 60 * 60 * 24, JSON.stringify(res))
+        client.setex('hardcoded', 60 * 60 * 24, 'true')
+      })
+      res.json(_.get(resp, 'data._embedded.transactions', []))
+    })
+    if (req.body.content.reference !== 'SAVING') {
+      if (req.body.content.type === 'TRANSACTION_FASTER_PAYMENT_IN') {
+        client.get('IN_Income_Savings', (err, resp) => {
+          console.log('IN_Income_Savings')
+
+          console.log('resp ' + resp)
+          if (!Number(resp)) resp = '1'
+          if (Number(resp)) {
+            starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + (req.body.content.amount * Number(resp) / 100))
+          }
+        })
+      } else if (req.body.content.type === 'TRANSACTION_FASTER_PAYMENT_OUT') {
         var tax = 0
         client.get('OUT_RoundUp', (err2, resp2) => {
+          console.log('resp2 ' + resp2)
           client.get('OUT_PersonalTax', (err3, resp3) => {
+            console.log('resp3 ' + resp3)
             console.log('OUT_PersonalTax')
             if (Number(resp2)) {
               tax += Math.ceil(req.body.content.amount) - req.body.content.amount
@@ -173,6 +178,7 @@ const start = (app) => {
             if (Number(resp3)) {
               tax += (req.body.content.amount * Number(resp3) / 100)
             }
+            if (!Number(tax)) tax = '1'
             console.log('Tax: ' + tax)
             if (tax) {
               starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + tax)
