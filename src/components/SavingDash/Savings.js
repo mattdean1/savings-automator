@@ -84,8 +84,8 @@ class Dashboard extends React.Component {
       OUT_RoundUp : false,
       OUT_PersonalTax: 0,
       slidervalue: 50,
-      totalSaved: 0
-      indexToDelete: 0,
+      totalSaved: 0,
+      indexToDelete: 0
     })
 
     this.handleItemClick = this.handleItemClick.bind(this)
