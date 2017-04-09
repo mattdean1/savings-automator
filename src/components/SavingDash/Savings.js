@@ -29,37 +29,37 @@ import './Savings.scss'
 import 'react-rangeslider/lib/index.css'
 
 const sampleGoals = [
-  {
-    title : 'Macbook Pro',
-    goal : 1500,
-    raised : 1500,
-    percentage : 33,
-    category: 'Technology',
-    start_date : '08/03/17',
-    estimated_end_date : '08/05/17',
-    estimated_days : 44
-  },
-  {
-    title : 'Holiday to Malta',
-    goal : 800,
-    raised : 12.54,
-    percentage : 33,
-    category: 'Holiday',
-    start_date : '06/02/17',
-    estimated_end_date : '08/12/17',
-    estimated_days : 76
-  },
-  {
-    title : 'goal3',
-    goal : 800,
-    raised : 12.54,
-    percentage : 33,
-    category: 'Holiday',
-    start_date : '06/02/17',
-    estimated_end_date : '08/12/17',
-    estimated_days : 76
-  }
-]
+{
+  title : 'Macbook Pro',
+  goal : 1500,
+  raised : 1500,
+  percentage : 33,
+  category: 'Technology',
+  start_date : '08/03/17',
+  estimated_end_date : '08/05/17',
+  estimated_days : 44
+},
+{
+  title : 'Holiday to Malta',
+  goal : 800,
+  raised : 12.54,
+  percentage : 33,
+  category: 'Holiday',
+  start_date : '06/02/17',
+  estimated_end_date : '08/12/17',
+  estimated_days : 76
+},
+{
+  title : 'goal3',
+  goal : 800,
+  raised : 12.54,
+  percentage : 33,
+  category: 'Holiday',
+  start_date : '06/02/17',
+  estimated_end_date : '08/12/17',
+  estimated_days : 76
+}
+];
 
 class Dashboard extends React.Component {
 
@@ -76,6 +76,7 @@ class Dashboard extends React.Component {
     this.state = ({
       activeItem: 'goals',
       modal: false,
+      confirmModal: false,
       transactions: [],
       goals : sampleGoals,
       goalCount : 0,
@@ -84,6 +85,7 @@ class Dashboard extends React.Component {
       OUT_PersonalTax: 0,
       slidervalue: 50,
       totalSaved: 0
+      indexToDelete: 0,
     })
 
     this.handleItemClick = this.handleItemClick.bind(this)
@@ -347,34 +349,40 @@ class Dashboard extends React.Component {
   }
 
   goalsView (goals) {
-    const newArray = goals.map((goal) => {
+    const newArray = goals.map((goal, index) => {
       const percentRaised = (goal.raised / goal.goal) * 100
       return (
         <div key={goal.title + '' + Math.random()} className='ui cards'>
-          <div style={{ width: '100%' }} className='card'>
-            <div className='content'>
-              <div className='header'>
-                {goal.title}
-                {percentRaised === 100 ? <span style={{ float: 'right' }}>Completed!</span> : null}
-              </div>
-              <div className='meta'>
+        <div style={{ width: '100%' }} className='card'>
+          <div className='content'>
+            <div className='header'>
+              {goal.title}
+              <Button
+                style={{float: 'right', backgroundColor: 'white', width: 40, marginLeft: 10}}
+                onClick={(e) => {
+                  //open a confirmation modal
+                  this.setState({confirmModal: true, indexToDelete: index});
+                }}
+              >
+                <Icon name='remove' /> 
+              </Button>
+            </div>
+            <div className='meta'>
               £{goal.raised} out of £{goal.goal}
               </div>
               <div className='description'>
               Estimated Days To Achievement: <strong>{goal.estimated_days}</strong>
               </div>
             </div>
-            <div className='extra content'>
-              <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
-              {/* <div className='ui icon buttons'>
-              <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
-              <div className='increment ui basic green button icon'><i className='plus icon' /></div>
-            </div> */}
-            </div>
-            <Progress
-              percent={percentRaised}
-              attached='bottom'
-              color={percentRaised === 100 ? 'green' : 'violet'}
+          </div>
+          <div className='extra content'>
+            <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
+            {percentRaised === 100 ? <span style={{float: 'right'}}>Completed!</span> : null}
+          </div>
+          <Progress
+            percent={percentRaised}
+            attached='bottom'
+            color={percentRaised === 100 ? 'green' : 'violet'}
           />
           </div>
         </div>
@@ -420,22 +428,56 @@ class Dashboard extends React.Component {
             </Modal.Actions>
           </Modal.Content>
         </Modal>
+        <Modal basic size='small' open={this.state.confirmModal}>
+          <Header icon='archive' content='Delete a Goal!' />
+          <Modal.Content>
+            <p>Are you sure you want to delete this goal?</p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button basic color='red' inverted onClick={() => this.setState({confirmModal: false})}>
+              <Icon name='remove' /> No
+            </Button>
+            <Button color='green' inverted onClick={() => {
+              //remove the goal from state
+              let newGoals = this.state.goals;
+              newGoals = update(newGoals, {$splice: [[this.state.indexToDelete, 1]]});
+              this.setState({goals: newGoals, confirmModal: false});
+            }}>
+              <Icon name='checkmark' /> Yes
+            </Button>
+          </Modal.Actions>
+        </Modal>
       </div>
     )
   }
 
   createGoal () {
-    const newGoal = this.state.newGoal
+    const sampleGoalObject = {
+      title : 'No Title',
+      goal : 0,
+      raised : 0,
+      percentage : 0,
+      category: 'Unknown',
+      start_date : '01/01/01',
+      estimated_end_date : '01/01/01',
+      estimated_days : 0
+    }
+    let newGoal = sampleGoalObject;
     newGoal.title = this.state.newGoalTitle
     newGoal.category = this.state.newGoalCategory
     newGoal.goal = this.state.newGoalCost
     newGoal.start_date = new Date()
     newGoal.key2 = '' + (+new Date())
 
-    let goalsArray = update(this.state.goals, { $push: [newGoal] })
-
-    this.setState({ goals: goalsArray })
-    // this.setState({ goals: goalsArray, modal: false, goalCount: this.state.goalCount++ })
+if(this.state.newGoalTitle != '') {
+  let goalsArray = update(this.state.goals, { $push: [newGoal] })
+  for (var i = 0; i < goalsArray.length; i += 1) {
+    goalsArray[i].raised = this.state.totalSaved * percentage / 100
+  }
+  this.setState({ goals: goalsArray, modal: false, newGoalTitle: '', newGoalCategory: '', newGoalCost: 0})
+} else {
+  this.setState({ modal: false})
+}
   }
 
   menu () {
