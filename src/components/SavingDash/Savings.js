@@ -76,6 +76,7 @@ class Dashboard extends React.Component {
     this.state = ({
       activeItem: 'goals',
       modal: false,
+      confirmModal: false,
       transactions: [],
       goals : sampleGoals,
       goalCount : 0,
@@ -83,6 +84,7 @@ class Dashboard extends React.Component {
       OUT_RoundUp : false,
       OUT_PersonalTax: 0,
       slidervalue: 50,
+      indexToDelete: 0,
     })
 
     this.handleItemClick = this.handleItemClick.bind(this)
@@ -336,7 +338,7 @@ class Dashboard extends React.Component {
   }
 
   goalsView (goals) {
-    const newArray = goals.map((goal) => {
+    const newArray = goals.map((goal, index) => {
       const percentRaised = (goal.raised / goal.goal) * 100
       return (
         <div key={goal.title + '' + Math.random()} className='ui cards'>
@@ -344,7 +346,15 @@ class Dashboard extends React.Component {
           <div className='content'>
             <div className='header'>
               {goal.title}
-              {percentRaised === 100 ? <span style={{float: 'right'}}>Completed!</span> : null}
+              <Button
+                style={{float: 'right', backgroundColor: 'white', width: 40, marginLeft: 10}}
+                onClick={(e) => {
+                  //open a confirmation modal
+                  this.setState({confirmModal: true, indexToDelete: index});
+                }}
+              >
+                <Icon name='remove' /> 
+              </Button>
             </div>
             <div className='meta'>
               £{goal.raised} out of £{goal.goal}
@@ -355,10 +365,7 @@ class Dashboard extends React.Component {
           </div>
           <div className='extra content'>
             <h4 style={{ display:'inline', paddingRight: 10, marginTop: 10 }}>Savings Allocation: <strong>{goal.percentage}%</strong></h4>
-            {/* <div className='ui icon buttons'>
-              <div className='decrement ui basic red button icon'><i className='minus icon' /></div>
-              <div className='increment ui basic green button icon'><i className='plus icon' /></div>
-            </div> */}
+            {percentRaised === 100 ? <span style={{float: 'right'}}>Completed!</span> : null}
           </div>
           <Progress
             percent={percentRaised}
@@ -408,6 +415,25 @@ class Dashboard extends React.Component {
     </Button>
             </Modal.Actions>
           </Modal.Content>
+        </Modal>
+        <Modal basic size='small' open={this.state.confirmModal}>
+          <Header icon='archive' content='Delete a Goal!' />
+          <Modal.Content>
+            <p>Are you sure you want to delete this goal?</p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button basic color='red' inverted onClick={() => this.setState({confirmModal: false})}>
+              <Icon name='remove' /> No
+            </Button>
+            <Button color='green' inverted onClick={() => {
+              //remove the goal from state
+              let newGoals = this.state.goals;
+              newGoals = update(newGoals, {$splice: [[this.state.indexToDelete, 1]]});
+              this.setState({goals: newGoals, confirmModal: false});
+            }}>
+              <Icon name='checkmark' /> Yes
+            </Button>
+          </Modal.Actions>
         </Modal>
       </div>
     )
