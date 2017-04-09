@@ -127,9 +127,9 @@ const start = (app) => {
   app.post('/api/sandbox/rules', (req, res) => {
     console.log('Ping rules')
     console.log(req.body)
-    client.set('OUT_RoundUp', JSON.stringify(req.body.OUT_RoundUp), redis.print)
-    client.set('OUT_PersonalTax', JSON.stringify(req.body.OUT_PersonalTax), redis.print)
-    client.set('IN_Income_Savings', JSON.stringify(req.body.IN_Income_Savings), redis.print)
+    client.set('OUT_RoundUp', req.body.OUT_RoundUp === 'false' ? 0 : 1, redis.print)
+    client.set('OUT_PersonalTax', req.body.OUT_PersonalTax, redis.print)
+    client.set('IN_Income_Savings', req.body.IN_Income_Savings, redis.print)
   })
 
   app.post('/api/sandbox/webhook', (req, res) => {
