@@ -82,7 +82,8 @@ class Dashboard extends React.Component {
       IN_Income_Savings : 0,
       OUT_RoundUp : false,
       OUT_PersonalTax: 0,
-      slidervalue: 50
+      slidervalue: 50,
+      totalSaved: 0
     })
 
     this.handleItemClick = this.handleItemClick.bind(this)
@@ -98,7 +99,15 @@ class Dashboard extends React.Component {
       console.log('Updated Transactions')
       console.log(res.length)
       console.log(res)
-      self.setState({ transactions: res })
+      var total = 0
+      for (var i = 0; i < res.length; i += 1) {
+        if (res[i].narrative === 'SAVING') total += Math.abs(res[i].amount)
+      }
+      var goals = self.state.goals
+      for (var i = 0; i < goals.length; i += 1) {
+        goals[i].raised = total * percentage / 100
+      }
+      self.setState({ transactions: res, totalSaved: total, goals })
     })
   }
 
@@ -207,6 +216,8 @@ class Dashboard extends React.Component {
 
     // Update state with new goal value
     const newGoals = this.state.goals.map((goal, index) => {
+      goal.raised = this.state.totalSaved * goal.percentage / 100
+
       const goalCopy = goal
       if (index === goalindex) {
         goalCopy.percentage = newvalue
