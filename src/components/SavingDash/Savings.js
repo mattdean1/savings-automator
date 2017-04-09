@@ -469,7 +469,10 @@ if(this.state.newGoalTitle != '' && this.state.newGoalTitle != undefined) {
 
   menu () {
     return (
-      <Menu id='pillsmenu' fluid widths={3}>
+    <div id='pillsmenu'>
+      <div id='totalsaved'>TOTAL SAVED: £55</div>
+
+      <Menu id='pills' fluid widths={3}>
         <Menu.Item
           name='goals'
           active={this.state.activeItem === 'goals'}
@@ -494,6 +497,7 @@ if(this.state.newGoalTitle != '' && this.state.newGoalTitle != undefined) {
             Rules
           </Menu.Item>
       </Menu>
+    </div>
     )
   }
 }

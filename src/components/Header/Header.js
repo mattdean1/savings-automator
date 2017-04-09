@@ -7,6 +7,8 @@ const styles = {
   header : {
     boxShadow: 'none',
     backgroundColor: '#1E1937',
+    fontFamily: 'Helvetica Neue',
+    fontWeight: 100,
   }
 };
 
