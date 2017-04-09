@@ -59,7 +59,7 @@ const sampleGoals = [
   estimated_end_date : '08/12/17',
   estimated_days : 76
 }
-]
+];
 
 class Dashboard extends React.Component {
 
@@ -440,17 +440,29 @@ class Dashboard extends React.Component {
   }
 
   createGoal () {
-    const newGoal = this.state.newGoal
+    const sampleGoalObject = {
+      title : 'No Title',
+      goal : 0,
+      raised : 0,
+      percentage : 0,
+      category: 'Unknown',
+      start_date : '01/01/01',
+      estimated_end_date : '01/01/01',
+      estimated_days : 0
+    }
+    let newGoal = sampleGoalObject;
     newGoal.title = this.state.newGoalTitle
     newGoal.category = this.state.newGoalCategory
     newGoal.goal = this.state.newGoalCost
     newGoal.start_date = new Date()
     newGoal.key2 = '' + (+new Date())
 
-    let goalsArray = update(this.state.goals, { $push: [newGoal] })
-
-    this.setState({ goals: goalsArray })
-    // this.setState({ goals: goalsArray, modal: false, goalCount: this.state.goalCount++ })
+if(this.state.newGoalTitle != '') {
+  let goalsArray = update(this.state.goals, { $push: [newGoal] })
+  this.setState({ goals: goalsArray, modal: false, newGoalTitle: '', newGoalCategory: '', newGoalCost: 0})
+} else {
+  this.setState({ modal: false})
+}
   }
 
 
