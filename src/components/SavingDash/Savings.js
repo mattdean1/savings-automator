@@ -385,7 +385,6 @@ class Dashboard extends React.Component {
             color={percentRaised === 100 ? 'green' : 'violet'}
           />
           </div>
-        </div>
       )
     })
     return (
