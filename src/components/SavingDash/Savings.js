@@ -107,7 +107,8 @@ class Dashboard extends React.Component {
       }
       var goals = self.state.goals
       for (var i = 0; i < goals.length; i += 1) {
-        goals[i].raised = total * goals[i].percentage / 100
+        goals[i].raised = Number((total * goals[i].percentage / 100).toFixed(2));
+        goals[i].estimated_days = Math.abs(Math.ceil((goals[i].goal - goals[i].raised) /5));
       }
       self.setState({ transactions: res, totalSaved: total, goals })
     })
@@ -218,8 +219,8 @@ class Dashboard extends React.Component {
 
     // Update state with new goal value
     const newGoals = this.state.goals.map((goal, index) => {
-      goal.raised = this.state.totalSaved * goal.percentage / 100
-
+      goal.raised = Number((this.state.totalSaved * goal.percentage / 100).toFixed(2))
+      goal.estimated_days = Math.abs(Math.ceil((goal.goal - goal.raised) /5));
       const goalCopy = goal
       if (index === goalindex) {
         goalCopy.percentage = newvalue
@@ -471,7 +472,8 @@ class Dashboard extends React.Component {
 if(this.state.newGoalTitle != '') {
   let goalsArray = update(this.state.goals, { $push: [newGoal] })
   for (var i = 0; i < goalsArray.length; i += 1) {
-    goalsArray[i].raised = this.state.totalSaved * goalsArray[i].percentage / 100
+    goalsArray[i].raised = Number((this.state.totalSaved * goalsArray[i].percentage / 100).toFixed(2));
+    goalsArray[i].estimated_days = Math.abs(Math.ceil(( goalsArray[i].goal -  goalsArray[i].raised) /5)); 
   }
   this.setState({ goals: goalsArray, modal: false, newGoalTitle: '', newGoalCategory: '', newGoalCost: 0})
 } else {
