@@ -224,9 +224,11 @@ class Dashboard extends React.Component {
       const goalCopy = goal
       if (index === goalindex) {
         goalCopy.percentage = newvalue
+        goalCopy.percentage = Math.round(goalCopy.percentage * 100) /100;
         return goalCopy
       } else {
-        goalCopy.percentage = goalCopy.percentage - share
+        goalCopy.percentage = goalCopy.percentage - share;
+        goalCopy.percentage = Math.round(goalCopy.percentage * 100) /100;
         return goalCopy
       }
     })
@@ -365,15 +367,14 @@ class Dashboard extends React.Component {
                   this.setState({confirmModal: true, indexToDelete: index});
                 }}
               >
-                <Icon name='remove' /> 
+                <Icon name='remove' />
               </Button>
             </div>
             <div className='meta'>
               £{goal.raised} out of £{goal.goal}
-              </div>
-              <div className='description'>
+            </div>
+            <div className='description'>
               Estimated Days To Achievement: <strong>{goal.estimated_days}</strong>
-              </div>
             </div>
           </div>
           <div className='extra content'>
@@ -385,7 +386,8 @@ class Dashboard extends React.Component {
             attached='bottom'
             color={percentRaised === 100 ? 'green' : 'violet'}
           />
-          </div>
+        </div>
+      </div>
       )
     })
     return (
@@ -438,9 +440,19 @@ class Dashboard extends React.Component {
               <Icon name='remove' /> No
             </Button>
             <Button color='green' inverted onClick={() => {
+              const removedValue = this.state.goals[this.state.indexToDelete].percentage;
               //remove the goal from state
               let newGoals = this.state.goals;
               newGoals = update(newGoals, {$splice: [[this.state.indexToDelete, 1]]});
+              //recalculate percentages
+              const numGoalsRemaining = newGoals.length;
+              const share = removedValue / numGoalsRemaining;
+              newGoals = newGoals.map((goal) => {
+                let goalCopy = goal;
+                goalCopy.percentage = goalCopy.percentage + share;
+                goalCopy.percentage = Math.round(goalCopy.percentage * 100) /100;
+                return goalCopy;
+              })
               this.setState({goals: newGoals, confirmModal: false});
             }}>
               <Icon name='checkmark' /> Yes
@@ -460,7 +472,7 @@ class Dashboard extends React.Component {
       category: 'Unknown',
       start_date : '01/01/01',
       estimated_end_date : '01/01/01',
-      estimated_days : 0
+      estimated_days : Math.ceil(Math.random(1, 100) * 100)
     }
     let newGoal = sampleGoalObject;
     newGoal.title = this.state.newGoalTitle
@@ -469,7 +481,8 @@ class Dashboard extends React.Component {
     newGoal.start_date = new Date()
     newGoal.key2 = '' + (+new Date())
 
-if(this.state.newGoalTitle != '') {
+if(this.state.newGoalTitle != '' && this.state.newGoalTitle != undefined) {
+  console.log(this.state.newGoalTitle)
   let goalsArray = update(this.state.goals, { $push: [newGoal] })
   for (var i = 0; i < goalsArray.length; i += 1) {
     goalsArray[i].raised = Number((this.state.totalSaved * goalsArray[i].percentage / 100).toFixed(2));
@@ -483,7 +496,10 @@ if(this.state.newGoalTitle != '') {
 
   menu () {
     return (
-      <Menu id='pillsmenu' fluid widths={3}>
+    <div id='pillsmenu'>
+      <div id='totalsaved'>TOTAL SAVED: £{this.state.totalSaved}</div>
+
+      <Menu id='pills' fluid widths={3}>
         <Menu.Item
           name='goals'
           active={this.state.activeItem === 'goals'}
@@ -508,6 +524,7 @@ if(this.state.newGoalTitle != '') {
             Rules
           </Menu.Item>
       </Menu>
+    </div>
     )
   }
 }
