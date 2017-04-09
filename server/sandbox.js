@@ -142,27 +142,26 @@ const start = (app) => {
       for (var i = 0; i < list.length; i += 1) {
         promises.push(starlingApiWrapper.transaction(starlingClient, getAccessToken(db), list[i]['id']))
       }
-      Promise.all(promises).then(function(res){
-             console.log('Updated via webhook');
-             for(var i = 0; i < res.length; i += 1){
-               res[i] = _.get( res[i], 'data', [])
-             }
-            client.setex('getAll', 60*60*24, JSON.stringify(res));
-            client.setex('hardcoded', 60*60*24, 'true');
-      });
-      res.json(_.get(resp, 'data._embedded.transactions', []))
-  });
-  if(req.body.content.reference !== 'SAVING'){
-    if(req.body.content.type === 'TRANSACTION_FASTER_PAYMENT_IN'){
-      client.get('IN_Income_Savings', (err, resp) => {
-        console.log('IN_Income_Savings')
-        resp = '1';
-        if(Number(resp)){
-          starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + (req.body.content.amount * Number(resp)/100 ));
+      Promise.all(promises).then(function (res) {
+        console.log('Updated via webhook')
+        for (var i = 0; i < res.length; i += 1) {
+          res[i] = _.get(res[i], 'data', [])
         }
-      });
-    }
-      else if (res.body.content.type === 'TRANSACTION_FASTER_PAYMENT_OUT') {
+        client.setex('getAll', 60 * 60 * 24, JSON.stringify(res))
+        client.setex('hardcoded', 60 * 60 * 24, 'true')
+      })
+      res.json(_.get(resp, 'data._embedded.transactions', []))
+    })
+    if (req.body.content.reference !== 'SAVING') {
+      if (req.body.content.type === 'TRANSACTION_FASTER_PAYMENT_IN') {
+        client.get('IN_Income_Savings', (err, resp) => {
+          console.log('IN_Income_Savings')
+          resp = '1'
+          if (Number(resp)) {
+            starlingApiWrapper.payment(starlingClient, getAccessToken(db), '' + (req.body.content.amount * Number(resp) / 100))
+          }
+        })
+      } else if (res.body.content.type === 'TRANSACTION_FASTER_PAYMENT_OUT') {
         var tax = 0
         client.get('OUT_RoundUp', (err2, resp2) => {
           client.get('OUT_PersonalTax', (err3, resp3) => {
