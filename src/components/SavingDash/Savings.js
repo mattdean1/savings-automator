@@ -107,7 +107,7 @@ class Dashboard extends React.Component {
       }
       var goals = self.state.goals
       for (var i = 0; i < goals.length; i += 1) {
-        goals[i].raised = total * percentage / 100
+        goals[i].raised = total * goals[i].percentage / 100
       }
       self.setState({ transactions: res, totalSaved: total, goals })
     })
@@ -471,7 +471,7 @@ class Dashboard extends React.Component {
 if(this.state.newGoalTitle != '') {
   let goalsArray = update(this.state.goals, { $push: [newGoal] })
   for (var i = 0; i < goalsArray.length; i += 1) {
-    goalsArray[i].raised = this.state.totalSaved * percentage / 100
+    goalsArray[i].raised = this.state.totalSaved * goalsArray[i].percentage / 100
   }
   this.setState({ goals: goalsArray, modal: false, newGoalTitle: '', newGoalCategory: '', newGoalCost: 0})
 } else {
