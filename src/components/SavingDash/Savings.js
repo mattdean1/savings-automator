@@ -448,7 +448,7 @@ class Dashboard extends React.Component {
       category: 'Unknown',
       start_date : '01/01/01',
       estimated_end_date : '01/01/01',
-      estimated_days : 0
+      estimated_days : Math.ceil(Math.random(1, 100) * 100)
     }
     let newGoal = sampleGoalObject;
     newGoal.title = this.state.newGoalTitle
@@ -457,7 +457,8 @@ class Dashboard extends React.Component {
     newGoal.start_date = new Date()
     newGoal.key2 = '' + (+new Date())
 
-if(this.state.newGoalTitle != '') {
+if(this.state.newGoalTitle != '' && this.state.newGoalTitle != undefined) {
+  console.log(this.state.newGoalTitle)
   let goalsArray = update(this.state.goals, { $push: [newGoal] })
   this.setState({ goals: goalsArray, modal: false, newGoalTitle: '', newGoalCategory: '', newGoalCost: 0})
 } else {
