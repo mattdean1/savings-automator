@@ -4,15 +4,13 @@
 </p>
 
 <h1 align="center">
-  <a href="http://developer.starlingbank.com/get-started">Starling Developers</a>
-  <br>Web Starter Kit
+  <a href="http://developer.starlingbank.com/get-started">Starling Savings Automator</a>
+  <br>By the 0100 Musketeers
 </h1>
 
+This project contains a web application that integrates with the Starling Bank API to retrieve a customer's transaction history. The application then fires other transactions to a 'savings' account based upon custom rules the user can set, this allows the user to work towards financial goals.
 
-This project contains a sample web application that integrates with the Starling Bank API to retrieve a customer's transaction history.
-The React Redux application is based on [this starter kit](https://github.com/davezuko/react-redux-starter-kit) and is comprised of a simple REST API written in javascript using node.js with express. The 
-
-Looking for the [Mobile Starter Kit](https://github.com/starlingbank/starling-api-mobile-starter-kit) instead?
+The React Redux application is based on [this starter kit](https://github.com/davezuko/react-redux-starter-kit) and is comprised of a simple REST API written in javascript using node.js with express.
 
 ## Getting Started
 Please also take a look at the higher-level [Getting Started Guide](http://developer.starlingbank.com/get-started) on our site, which covers usage of our API as a whole.
