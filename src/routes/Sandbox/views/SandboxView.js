@@ -27,12 +27,13 @@ class SandboxView extends React.Component {
     window.location.href = ('/api/logout')
   }
 
+
   render () {
     const urlParams = new URLSearchParams(window.location.search)
     const error = urlParams.get('error')
     const { loading, transactions, balance, customer } = this.props.sandbox
     return (
-      <Grid>
+      <Grid style={{margin: 0}}>
         {loading ? <Loading />
           : (transactions && balance && customer
             ? <Dashboard mode={'Sandbox'} customer={customer} transactions={transactions} balance={balance}>

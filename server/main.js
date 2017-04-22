@@ -1,15 +1,22 @@
 const express = require('express')
 const debug = require('debug')('app:server')
 const path = require('path')
+const bodyParser = require('body-parser')
 const webpack = require('webpack')
+
 const webpackConfig = require('../config/webpack.config')
 const project = require('../config/project.config')
 const compress = require('compression')
 const bootstrapExampleApp = require('./bootstrapExampleApp');
 const app = express()
-
+const expressWs = require('express-ws')(app);
 // Apply gzip compression
 app.use(compress())
+app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+
 
 // ------------------------------------
 // Apply Webpack HMR Middleware
