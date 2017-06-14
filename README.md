@@ -1,14 +1,21 @@
+# Starling Savings Automator
 
-<p align="center">
-    <img height="180" width="180" src="https://www.starlingbank.com/static-files/developer-portal/github/starter-web.png">
-</p>
+An automated savings app which allows you to automatically allocate funds to your savings account based on customisable rules, and track your progress towards savings goals.
 
-<h1 align="center">
-  <a href="http://developer.starlingbank.com/get-started">Starling Savings Automator</a>
-  <br>By the 0100 Musketeers
-</h1>
+### Setting up some savings rules
 
-This project contains a web application that integrates with the Starling Bank API to retrieve a customer's transaction history. The application then fires other transactions to a 'savings' account based upon custom rules the user can set, this allows the user to work towards financial goals.
+![rules](./screenshots/rules.png 'rules')
+
+### Tracking progress
+
+![goals](./screenshots/goals.png)
+
+### Customising savings allocation toward our goals
+
+![sliders](./screenshots/sliders.png)
+
+
+# Deployment
 
 The React Redux application is based on [this starter kit](https://github.com/davezuko/react-redux-starter-kit) and is comprised of a simple REST API written in javascript using node.js with express.
 
