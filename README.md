@@ -2,7 +2,9 @@
 
 An automated savings app which allows you to automatically allocate funds to your savings account based on customisable rules, and track your progress towards savings goals.
 
-Created at the first ever [Starling Bank open-banking hackathon](https://www.starlingbank.com/blog/starling-hackathon-the-roundup/)
+## Created at the first ever [Starling Bank open-banking hackathon](https://www.starlingbank.com/blog/starling-hackathon-the-roundup/)
+
+----
 
 ### Setting up some savings rules
 
