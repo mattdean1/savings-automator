@@ -4,7 +4,7 @@ An automated savings app which allows you to automatically allocate funds to you
 
 ## Created at the first ever [Starling Bank open-banking hackathon](https://www.starlingbank.com/blog/starling-hackathon-the-roundup/)
 
-----
+
 
 ### Setting up some savings rules
 
