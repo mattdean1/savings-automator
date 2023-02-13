@@ -1,9 +1,10 @@
 # Starling Savings Automator
 
-An automated savings app which allows you to automatically allocate funds to your savings account based on customisable rules, and track your progress towards savings goals.
+Automatically allocate funds to your savings account based on customisable rules, and track your progress towards savings goals. 
 
-## Created at the first ever [Starling Bank open-banking hackathon](https://www.starlingbank.com/blog/starling-hackathon-the-roundup/)
+Built as part of a hackathon for Starling Bank's beta release of the first Open Banking API. 
 
+Later released as a core feature for Starling and many other challenger bank apps.
 
 
 ### Setting up some savings rules
